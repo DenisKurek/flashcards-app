@@ -20,8 +20,8 @@ export default function HomePage() {
   return (
     <div className="h-100 card justify-content-center bg-dark-subtle">
       <ul className=" h-100">
-        {elements.map((flashCard) => (
-          <div className=" d-flex  justify-content-around">
+        {elements.map((flashCard, index) => (
+          <div className=" d-flex  justify-content-around" key={index}>
             <input type="text" value={flashCard.concept} />
             <input type="text" value={flashCard.definition} />
           </div>

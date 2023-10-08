@@ -19,8 +19,10 @@ const sets = [
 const SetsList = () => {
   return (
     <ul className=" list-group">
-      {sets.map((set) => (
-        <li className=" list-group-item">{set.title}</li>
+      {sets.map((set, index) => (
+        <li className=" list-group-item" key={index}>
+          {set.title}
+        </li>
       ))}
     </ul>
   );
