@@ -18,9 +18,9 @@ const sets = [
 
 const SetsList = () => {
   return (
-    <ul className=" list-group">
+    <ul className=" list-group d-flex justify-content-evenly">
       {sets.map((set, index) => (
-        <li className=" list-group-item" key={index}>
+        <li className=" list-group-item m-2" key={index}>
           {set.title}
         </li>
       ))}

@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -8,9 +7,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="card">
+      <body className="bg-dark-subtle">
         <Navbar />
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );
