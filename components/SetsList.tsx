@@ -19,11 +19,13 @@ const sets = [
 const SetsList = () => {
   return (
     <ul className=" list-group d-flex justify-content-evenly">
-      {sets.map((set, index) => (
-        <li className=" list-group-item m-2" key={index}>
-          {set.title}
-        </li>
-      ))}
+      <div className="row">
+        {sets.map((set, index) => (
+          <li className=" list-group-item m-2" key={index}>
+            {set.title}
+          </li>
+        ))}
+      </div>
     </ul>
   );
 };
