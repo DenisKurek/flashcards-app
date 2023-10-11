@@ -1,9 +1,10 @@
 import { MongoClient } from "mongodb";
 
 export async function conntectToDatabase() {
-  const client = await MongoClient.connect(
-    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@flashcards.nsiphmq.mongodb.net/?retryWrites=true&w=majority`
-  );
-
+  const uri = process.env.MONGODB_URI;
+  if (uri == undefined) {
+    throw new Error("MONGODB_URI is undefined");
+  }
+  const client = await MongoClient.connect(uri);
   return client;
 }
