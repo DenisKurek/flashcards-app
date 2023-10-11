@@ -39,7 +39,7 @@ export default function HomePage() {
     <form className="container bg-dark" onSubmit={handleSubmit}>
       <ul className=" list-group ">
         {flashCards.map((flashCard, index) => (
-          <FlashcardForm flashCard={flashCard} index={index} />
+          <FlashcardForm flashCard={flashCard} key={index} index={index} />
         ))}
         <NewFlashCard onClick={handleFlashCardAddition} />
       </ul>

@@ -8,14 +8,14 @@ interface Props {
 
 const FlashcardForm: React.FC<Props> = (props) => {
   return (
-    <li className=" card list-group-item m-2" key={props.index}>
+    <li className=" card list-group-item m-2">
       <div className="row">
         <label htmlFor={`concept-${props.index}`}>Concept:</label>
         <input
           type="text"
           className="form-control"
           id={`concept-${props.index}`}
-          value={props.flashCard.concept}
+          defaultValue={props.flashCard.concept}
         />
       </div>
       <div className="row">
@@ -24,7 +24,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
           type="text"
           className="form-control"
           id={`definition-${props.index}`}
-          value={props.flashCard.definition}
+          defaultValue={props.flashCard.definition}
         />
       </div>
       <button className=" btn-danger"> delete</button>
