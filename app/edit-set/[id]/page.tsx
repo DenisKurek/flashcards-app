@@ -1,30 +1,29 @@
-'use client'
-import { ObjectId } from "mongodb";
+"use client";
+
 import { useState, useEffect } from "react";
 import Set from "@/lib/model/Set";
 
-
-export default function ({ params }: { params: { id: ObjectId } }){
-  console.log(params);
-  
+export default function Page({ params }: { params: { id: string } }) {
   const [set, setSet] = useState<Set>();
   useEffect(() => {
     async function getSet() {
-      const response = await fetch(`api/v1/set/{params.id}`,{
+      const response = await fetch(`/api/v1/set/${params.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const { set } = await response.json();
+      console.log("response -> ", response);
+      if (!response.ok) {
+        throw console.error(response);
+      }
+      const data = await response.json();
 
-      console.log(set);
-      setSet(set);
+      console.log("set -> ", data);
+      setSet(data);
     }
     getSet();
-  }, []);
+  }, [params.id]);
 
-    return(
-        <p> {JSON.stringify(set)}</p>
-    )
+  return <div>{JSON.stringify(set)}</div>;
 }

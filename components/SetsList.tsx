@@ -24,7 +24,11 @@ const SetsList = () => {
     <ul className=" list-group d-flex justify-content-evenly">
       <div className="row">
         {sets.map((set, index) => (
-          <Link href={`edit-set/${set._id}`} className=" list-group-item m-2" key={index}>
+          <Link
+            href={`edit-set/${set._id?.toString()}`}
+            className=" list-group-item m-2"
+            key={index}
+          >
             {set.name}
           </Link>
         ))}
