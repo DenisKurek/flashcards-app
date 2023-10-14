@@ -1,11 +1,11 @@
 "use client";
 import FlashcardForm from "@/components/new-set/FlashcardForm";
 import NewFlashCard from "@/components/new-set/NewFlashCard";
-import Set from "@/lib/model/Set";
-import Flashcard from "@/lib/ui-model/flashcard";
+import {SetBlueprint} from "@/lib/model/Set";
+import UiFlashcard from "@/lib/ui-model/flashCard";
 import { useState } from "react";
 
-async function createSet(set: Set) {
+async function createSet(set: SetBlueprint) {
   const response = await fetch("api/v1/set", {
     method: "POST",
     body: JSON.stringify(set),
@@ -16,12 +16,11 @@ async function createSet(set: Set) {
 }
 
 export default function HomePage() {
-  const [flashCards, setFlashcards] = useState<Flashcard[]>([]);
+  const [flashCards, setFlashcards] = useState<UiFlashcard[]>([]);
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     createSet({
-      _id: undefined,
       name: "New set",
       flashcards: [
         { concept: "ala ma kórwa czkawke ", definition: "kot" },
@@ -31,19 +30,30 @@ export default function HomePage() {
     });
   };
 
-  const handleFlashCardAddition = (flashCard: Flashcard) => {
+  const handleFlashCardAddition = (flashCard: UiFlashcard) => {
     setFlashcards((prev) => prev.concat(flashCard));
+  };
+
+  const handleFlashCardUpdate = (updatedFlashCard: UiFlashcard) => {
+    setFlashcards((prev) => prev.map((flashCard)=> flashCard.uid === updatedFlashCard.uid? updatedFlashCard: flashCard ));
+  };
+
+  const handleFlashCardDelete = (deleteId:string) => {
+    setFlashcards((prev) => prev.filter((flashCard)=> flashCard.uid!= deleteId));
   };
 
   return (
     <form className="container bg-dark" onSubmit={handleSubmit}>
       <ul className=" list-group ">
-        {flashCards.map((flashCard, index) => (
-          <FlashcardForm flashCard={flashCard} key={index} index={index} />
+        {flashCards.map((flashCard) => (
+          <FlashcardForm flashCard={flashCard} 
+          key={flashCard.uid}
+          onUpdate={handleFlashCardUpdate}
+          onDelete={handleFlashCardDelete}/>
         ))}
         <NewFlashCard onClick={handleFlashCardAddition} />
       </ul>
-      <button className=" btn-primary " type="submit">
+      <button className="btn-primary" type="submit">
         Create
       </button>
     </form>
