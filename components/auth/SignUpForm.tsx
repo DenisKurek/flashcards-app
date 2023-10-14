@@ -1,18 +1,69 @@
+import User from "@/lib/model/User";
 import Link from "next/link";
-import React from "react";
+import React, { SyntheticEvent, useRef } from "react";
 import AuthFormInput from "./AuthFormInput";
 
+async function createUser(user: User) {
+  const response = await fetch("/api/v1/auth/signup", {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "something went wrong!");
+  }
+
+  return data;
+}
+
 const SignUpForm = () => {
+  const emailRef: any = useRef();
+  const passwordRef: any = useRef();
+  const repeatPasswordRef: any = useRef();
+
+  const submitHandler = async (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    console.log(emailRef);
+
+    const email = emailRef.current.value;
+    console.log(email);
+
+    const password = passwordRef.current.value;
+    console.log(password);
+    const repeatPassword = repeatPasswordRef.current.value;
+    console.log(repeatPassword);
+
+    if (password !== repeatPassword) {
+      console.log(`ERROR ${password} is not equal to ${repeatPassword}`);
+      return;
+    }
+
+    const user: User = {
+      email: email,
+      password: password,
+    };
+
+    const result = await createUser(user);
+    console.log(result);
+  };
+
   return (
     <section className="container login-form-container">
       <h1 className=" text-center">Sign Up</h1>
-      <form className="card p-4">
+      <form className="card p-4" onSubmit={submitHandler}>
         <div className="form-group">
           <AuthFormInput
             id="email"
             type="email"
             placeholder="email"
             label="Email"
+            customRef={emailRef}
           />
         </div>
         <div className="form-group">
@@ -21,12 +72,14 @@ const SignUpForm = () => {
             type="password"
             placeholder="password"
             label="Password"
+            customRef={passwordRef}
           />
           <AuthFormInput
             id="repeat-password"
             type="password"
             placeholder="Repeat password"
             label="Repeat password"
+            customRef={repeatPasswordRef}
           />
         </div>
         <div className="row  d-flex  justify-content-center">

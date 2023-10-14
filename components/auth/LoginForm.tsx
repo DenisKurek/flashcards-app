@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
 import AuthFormInput from "./AuthFormInput";
 
 const LoginForm = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
   return (
     <section className="container login-form-container">
       <h1 className=" text-center">Login</h1>
@@ -13,6 +15,7 @@ const LoginForm = () => {
             type="email"
             placeholder="email"
             label="Email"
+            customRef={emailRef}
           />
         </div>
         <div className="form-group">
@@ -21,6 +24,7 @@ const LoginForm = () => {
             type="password"
             placeholder="password"
             label="Password"
+            customRef={passwordRef}
           />
         </div>
         <div className="row  d-flex  justify-content-center">

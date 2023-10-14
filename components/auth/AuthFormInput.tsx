@@ -3,6 +3,7 @@ interface Props {
   type: string;
   placeholder: string;
   label: string;
+  customRef: any;
 }
 
 const AuthFormInput: React.FC<Props> = (props) => {
@@ -15,6 +16,7 @@ const AuthFormInput: React.FC<Props> = (props) => {
         id={props.id}
         placeholder={props.placeholder}
         autoComplete="off"
+        ref={props.customRef}
         required
       />
     </div>
