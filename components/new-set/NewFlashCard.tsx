@@ -1,15 +1,15 @@
 import React from "react";
-import UiFlashcard from "@/lib/ui-model/flashCard";
+import Flashcard from "@/lib/model/FlashCard";
 
 interface Props {
-  onClick: (flashCard: UiFlashcard) => void;
+  onClick: (flashCard: Flashcard) => void;
 }
 
 const NewFlashCard: React.FC<Props> = (props) => {
   return (
     <li
       onClick={() => {
-        props.onClick({uid:`id_${(new Date).getTime()}`, concept: "", definition: "" });
+        props.onClick({id: (new Date).getTime(), concept: "", definition: "" });
       }}
       className=" btn list-group-item text-center m-2"
       key="createNewFlashcard"

@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import Flashcard, { FlashcardBlueprint } from "./flashcard";
+import Flashcard from "./FlashCard";
 
 export default interface Set extends SetBlueprint{
   _id: ObjectId;
@@ -9,5 +9,5 @@ export default interface Set extends SetBlueprint{
 
 export interface SetBlueprint {
   name: string;
-  flashcards: FlashcardBlueprint[];
+  flashcards: Flashcard[];
 }

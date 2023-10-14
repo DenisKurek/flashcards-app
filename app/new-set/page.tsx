@@ -2,8 +2,8 @@
 import FlashcardForm from "@/components/new-set/FlashcardForm";
 import NewFlashCard from "@/components/new-set/NewFlashCard";
 import {SetBlueprint} from "@/lib/model/Set";
-import UiFlashcard from "@/lib/ui-model/flashCard";
-import { useState } from "react";
+import Flashcard from "@/lib/model/FlashCard";
+import { useRef, useState } from "react";
 
 async function createSet(set: SetBlueprint) {
   const response = await fetch("api/v1/set", {
@@ -16,38 +16,38 @@ async function createSet(set: SetBlueprint) {
 }
 
 export default function HomePage() {
-  const [flashCards, setFlashcards] = useState<UiFlashcard[]>([]);
+  const [flashCards, setFlashcards] = useState<Flashcard[]>([]);
+  const nameRef:any = useRef();
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     createSet({
-      name: "New set",
-      flashcards: [
-        { concept: "ala ma kórwa czkawke ", definition: "kot" },
-        { concept: "ala ma kórwa czkawke ", definition: "kot" },
-        { concept: "ala ma kórwa czkawke ", definition: "kot" },
-      ],
+      name: nameRef.current.value,
+      flashcards: flashCards,
     });
   };
 
-  const handleFlashCardAddition = (flashCard: UiFlashcard) => {
+  const handleFlashCardAddition = (flashCard: Flashcard) => {
     setFlashcards((prev) => prev.concat(flashCard));
   };
 
-  const handleFlashCardUpdate = (updatedFlashCard: UiFlashcard) => {
-    setFlashcards((prev) => prev.map((flashCard)=> flashCard.uid === updatedFlashCard.uid? updatedFlashCard: flashCard ));
+  const handleFlashCardUpdate = (updatedFlashCard: Flashcard) => {
+    setFlashcards((prev) => prev.map((flashCard)=> flashCard.id === updatedFlashCard.id? updatedFlashCard: flashCard ));
   };
 
-  const handleFlashCardDelete = (deleteId:string) => {
-    setFlashcards((prev) => prev.filter((flashCard)=> flashCard.uid!= deleteId));
+  const handleFlashCardDelete = (deleteId: number) => {
+    setFlashcards((prev) => prev.filter((flashCard)=> flashCard.id!= deleteId));
   };
 
   return (
     <form className="container bg-dark" onSubmit={handleSubmit}>
+      <label htmlFor="set-name">Set Name: </label>
+      <input id="set-name" type="text" className=" form-control" defaultValue={"new Set"} ref={nameRef} required/>
       <ul className=" list-group ">
         {flashCards.map((flashCard) => (
-          <FlashcardForm flashCard={flashCard} 
-          key={flashCard.uid}
+          <FlashcardForm 
+          flashCard={flashCard} 
+          key={flashCard.id}
           onUpdate={handleFlashCardUpdate}
           onDelete={handleFlashCardDelete}/>
         ))}

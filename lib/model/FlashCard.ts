@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export default interface Flashcard extends FlashcardBlueprint{
-  _id: ObjectId;
+  id: number;
 }
 
 export interface FlashcardBlueprint {

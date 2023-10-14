@@ -1,33 +1,32 @@
-import { FlashcardBlueprint } from "@/lib/model/flashcard";
-import UiFlashcard from "@/lib/ui-model/flashCard";
+import Flashcard ,{FlashcardBlueprint} from "@/lib/model/FlashCard";
 import React from "react";
 
 interface Props {
-  flashCard: UiFlashcard;
-  onUpdate: (flaschcard: UiFlashcard) => void;
-  onDelete: (uid: string) => void;
+  flashCard: Flashcard;
+  onUpdate: (flaschcard: Flashcard) => void;
+  onDelete: (id: number) => void;
 }
 
 const FlashcardForm: React.FC<Props> = (props) => {
   const handleUpdate = (updatedFlashcard: FlashcardBlueprint)=>{
     props.onUpdate({
       ...updatedFlashcard,
-      uid:props.flashCard.uid
+      id:props.flashCard.id
     })
   }
 
   const handleDelate = ()=>{
-    props.onDelete(props.flashCard.uid)
+    props.onDelete(props.flashCard.id)
   }
 
   return (
     <li className=" card list-group-item m-2">
       <div className="row">
-        <label htmlFor={`concept-${props.flashCard.uid}`}>Concept:</label>
+        <label htmlFor={`concept-${props.flashCard.id}`}>Concept:</label>
         <input
           type="text"
           className="form-control"
-          id={`concept-${props.flashCard.uid}`}
+          id={`concept-${props.flashCard.id}`}
           defaultValue={props.flashCard.concept}
           onChange={(e)=>handleUpdate({
             concept:e.target.value,
@@ -36,11 +35,11 @@ const FlashcardForm: React.FC<Props> = (props) => {
         />
       </div>
       <div className="row">
-        <label htmlFor={`definition-${props.flashCard.uid}`}>Definition:</label>
+        <label htmlFor={`definition-${props.flashCard.id}`}>Definition:</label>
         <input
           type="text"
           className="form-control"
-          id={`definition-${props.flashCard.uid}`}
+          id={`definition-${props.flashCard.id}`}
           defaultValue={props.flashCard.definition}
           onChange={(e)=>handleUpdate({
             concept: props.flashCard.concept, 
