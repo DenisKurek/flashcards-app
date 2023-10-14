@@ -8,6 +8,7 @@ export async function POST(request: Request) {
     const db = client.db();
     const collection = db.collection("sets");
     const result = await collection.insertOne(set);
+    client.close();
     return NextResponse.json({ result });
   } catch (error) {
     console.log("ERROR");
@@ -23,6 +24,7 @@ export async function GET(request: Request) {
     const db = client.db();
     const collection = db.collection("sets");
     const sets = await collection.find({}).toArray();
+    client.close();
     return NextResponse.json({ sets });
   } catch (error) {
     console.log("ERROR");

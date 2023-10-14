@@ -13,5 +13,6 @@ export async function GET(
   const collection = db.collection("sets");
   const set = await collection.findOne(new ObjectId(params.id));
   console.log("return value =", set);
+  client.close();
   return NextResponse.json({ set });
 }
