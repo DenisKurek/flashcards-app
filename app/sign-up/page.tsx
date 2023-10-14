@@ -1,3 +1,4 @@
+"use client";
 import SignUpForm from "@/components/auth/SignUpForm";
 const LoginPage = () => {
   return <SignUpForm />;
