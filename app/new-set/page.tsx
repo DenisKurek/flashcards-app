@@ -1,36 +1,51 @@
-const elements = [
-  {
-    concept: "ala",
-    definition: "ma",
-  },
-  {
-    concept: "ala",
-    definition: "ma",
-  },
-  {
-    concept: "ala",
-    definition: "ma",
-  },
-  {
-    concept: "ala",
-    definition: "ma",
-  },
-];
+"use client";
+import FlashcardForm from "@/components/new-set/FlashcardForm";
+import NewFlashCard from "@/components/new-set/NewFlashCard";
+import Set from "@/lib/model/Set";
+import Flashcard from "@/lib/ui-model/flashcard";
+import { useState } from "react";
+
+async function createSet(set: Set) {
+  const response = await fetch("api/v1/set", {
+    method: "POST",
+    body: JSON.stringify(set),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
 export default function HomePage() {
+  const [flashCards, setFlashcards] = useState<Flashcard[]>([]);
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    createSet({
+      _id: undefined,
+      name: "New set",
+      flashcards: [
+        { concept: "ala ma kórwa czkawke ", definition: "kot" },
+        { concept: "ala ma kórwa czkawke ", definition: "kot" },
+        { concept: "ala ma kórwa czkawke ", definition: "kot" },
+      ],
+    });
+  };
+
+  const handleFlashCardAddition = (flashCard: Flashcard) => {
+    setFlashcards((prev) => prev.concat(flashCard));
+  };
+
   return (
-    <div className="h-100 card justify-content-center bg-dark-subtle">
-      <ul className=" h-100">
-        {elements.map((flashCard, index) => (
-          <div className=" d-flex  justify-content-around" key={index}>
-            <input type="text" value={flashCard.concept} />
-            <input type="text" value={flashCard.definition} />
-          </div>
+    <form className="container bg-dark" onSubmit={handleSubmit}>
+      <ul className=" list-group ">
+        {flashCards.map((flashCard, index) => (
+          <FlashcardForm flashCard={flashCard} key={index} index={index} />
         ))}
-        <div className=" d-flex  justify-content-around">
-          <input type="text" />
-          <input type="text" />
-        </div>
+        <NewFlashCard onClick={handleFlashCardAddition} />
       </ul>
-    </div>
+      <button className=" btn-primary " type="submit">
+        Create
+      </button>
+    </form>
   );
 }
