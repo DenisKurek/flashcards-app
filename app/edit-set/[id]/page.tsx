@@ -11,7 +11,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
   useEffect(() => {
     async function getSet() {
-      const response = await fetch(`/api/v1/set/${params.id}`, {
+      const response = await fetch(`/api/set/${params.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   const updateSet = async (SetBlueprint:SetBlueprint)=> {
-    const response = await fetch(`/api/v1/set/${params.id}`, {
+    const response = await fetch(`/api/set/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(SetBlueprint),
       headers: {
