@@ -1,13 +1,21 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Set, { SetBlueprint } from "@/lib/model/Set";
 import SetEditionForm from "@/components/edit-set/SetEditionForm";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [set, setSet] = useState<Set>();
   const router = useRouter();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (!session) {
+      router.replace("/login");
+    }
+  }, [session, router]);
+
   useEffect(() => {
     async function getSet() {
       const response = await fetch(`/api/set/${params.id}`, {

@@ -51,7 +51,11 @@ const FlashcardForm: React.FC<Props> = (props) => {
           }
         />
       </div>
-      <button className="btn-danger" onClick={handleDelate}>
+      <button
+        key={`delete-${props.flashCard.id}`}
+        className="btn-danger"
+        onClick={handleDelate}
+      >
         delete
       </button>
     </li>

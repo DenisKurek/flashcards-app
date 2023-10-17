@@ -2,10 +2,12 @@ import React, { SyntheticEvent, useRef } from "react";
 import Link from "next/link";
 import AuthFormInput from "./AuthFormInput";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const emailRef: any = useRef();
   const passwordRef: any = useRef();
+  const router = useRouter();
 
   const submitHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -18,6 +20,12 @@ const LoginForm = () => {
       email: email,
       password: password,
     });
+
+    if (!result?.ok) {
+      throw new Error("sign in is invalid");
+    }
+
+    router.push("/");
   };
 
   return (
