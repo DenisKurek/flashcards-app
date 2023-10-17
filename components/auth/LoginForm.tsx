@@ -1,14 +1,29 @@
-import React, { useRef } from "react";
+import React, { SyntheticEvent, useRef } from "react";
 import Link from "next/link";
 import AuthFormInput from "./AuthFormInput";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef: any = useRef();
+  const passwordRef: any = useRef();
+
+  const submitHandler = async (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: email,
+      password: password,
+    });
+  };
+
   return (
     <section className="container login-form-container">
       <h1 className=" text-center">Login</h1>
-      <form className=" card p-4">
+      <form className=" card p-4" onSubmit={submitHandler}>
         <div className="form-group">
           <AuthFormInput
             id="email"
