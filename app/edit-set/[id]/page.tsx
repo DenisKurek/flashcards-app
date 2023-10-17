@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Set, { SetBlueprint } from "@/lib/model/Set";
 import SetEditionForm from "@/components/edit-set/SetEditionForm";
 import { useRouter } from "next/navigation";
-import { ObjectId } from "mongodb";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [set, setSet] = useState<Set>();
@@ -26,7 +25,7 @@ export default function Page({ params }: { params: { id: string } }) {
     getSet();
   }, [params.id]);
 
-  const updateSet = async (SetBlueprint:SetBlueprint)=> {
+  const updateSet = async (SetBlueprint: SetBlueprint) => {
     const response = await fetch(`/api/set/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(SetBlueprint),
@@ -34,10 +33,14 @@ export default function Page({ params }: { params: { id: string } }) {
         "Content-Type": "application/json",
       },
     });
-    if(response.ok){
-      router.push("/")
+    if (response.ok) {
+      router.push("/");
     }
-  }
+  };
 
-  return set ? <SetEditionForm set={set} onSubmit={updateSet}/> : <p>Loading...</p>
+  return set ? (
+    <SetEditionForm set={set} onSubmit={updateSet} />
+  ) : (
+    <p>Loading...</p>
+  );
 }

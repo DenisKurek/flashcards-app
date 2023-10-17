@@ -16,7 +16,7 @@ const Navbar = () => {
         Home
       </Link>
       {session && (
-        <Link href={"new-set"} className=" fs-4">
+        <Link href={"/new-set"} className=" fs-4">
           Create new Set
         </Link>
       )}
@@ -25,7 +25,7 @@ const Navbar = () => {
           Logout
         </button>
       ) : (
-        <Link href="login" className="navbar-text">
+        <Link href="/login" className="navbar-text">
           Login
         </Link>
       )}

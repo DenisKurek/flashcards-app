@@ -1,6 +1,7 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
+import "bootstrap/dist/css/bootstrap.css";
 
 export default function RootLayout({
   children,
