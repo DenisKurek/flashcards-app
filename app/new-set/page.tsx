@@ -1,51 +1,26 @@
 "use client";
-import FlashcardForm from "@/components/new-set/FlashcardForm";
-import NewFlashCard from "@/components/new-set/NewFlashCard";
-import Set from "@/lib/model/Set";
-import Flashcard from "@/lib/ui-model/flashcard";
-import { useState } from "react";
+import {SetBlueprint} from "@/lib/model/Set";
+import SetEditionForm from "@/components/edit-set/SetEditionForm";
+import { useRouter } from "next/navigation";
 
-async function createSet(set: Set) {
-  const response = await fetch("api/v1/set", {
-    method: "POST",
-    body: JSON.stringify(set),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-}
 
 export default function HomePage() {
-  const [flashCards, setFlashcards] = useState<Flashcard[]>([]);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    createSet({
-      _id: undefined,
-      name: "New set",
-      flashcards: [
-        { concept: "ala ma kórwa czkawke ", definition: "kot" },
-        { concept: "ala ma kórwa czkawke ", definition: "kot" },
-        { concept: "ala ma kórwa czkawke ", definition: "kot" },
-      ],
+  const createSet = async (set: SetBlueprint) => {
+    const response = await fetch("api/v1/set", {
+      method: "POST",
+      body: JSON.stringify(set),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-  };
-
-  const handleFlashCardAddition = (flashCard: Flashcard) => {
-    setFlashcards((prev) => prev.concat(flashCard));
-  };
+    if(response.ok){
+      router.push("/")
+    }
+  }
 
   return (
-    <form className="container bg-dark" onSubmit={handleSubmit}>
-      <ul className=" list-group ">
-        {flashCards.map((flashCard, index) => (
-          <FlashcardForm flashCard={flashCard} key={index} index={index} />
-        ))}
-        <NewFlashCard onClick={handleFlashCardAddition} />
-      </ul>
-      <button className=" btn-primary " type="submit">
-        Create
-      </button>
-    </form>
+    <SetEditionForm set={{name: "newSet", flashcards: []}} onSubmit={createSet}/>
   );
 }
