@@ -4,7 +4,7 @@ import React, { SyntheticEvent, useRef } from "react";
 import AuthFormInput from "./AuthFormInput";
 
 async function createUser(user: User) {
-  const response = await fetch("/api/v1/auth/signup", {
+  const response = await fetch("/api/auth/signup", {
     method: "POST",
     body: JSON.stringify(user),
     headers: {
@@ -29,15 +29,9 @@ const SignUpForm = () => {
   const submitHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    console.log(emailRef);
-
     const email = emailRef.current.value;
-    console.log(email);
-
     const password = passwordRef.current.value;
-    console.log(password);
     const repeatPassword = repeatPasswordRef.current.value;
-    console.log(repeatPassword);
 
     if (password !== repeatPassword) {
       console.log(`ERROR ${password} is not equal to ${repeatPassword}`);
@@ -49,8 +43,7 @@ const SignUpForm = () => {
       password: password,
     };
 
-    const result = await createUser(user);
-    console.log(result);
+    createUser(user);
   };
 
   return (
