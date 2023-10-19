@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const SetsList = () => {
   const [sets, setSets] = useState<Set[]>([]);
+
   useEffect(() => {
     async function getSets() {
       const response = await fetch("api/set", {
@@ -14,8 +15,6 @@ const SetsList = () => {
         },
       });
       const { sets } = await response.json();
-
-      console.log(sets);
       setSets(sets);
     }
     getSets();

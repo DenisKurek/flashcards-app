@@ -3,7 +3,7 @@ import { conntectToDatabase } from "@/lib/utils/db";
 import NextAuth from "next-auth/next";
 import Credentials from "next-auth/providers/credentials";
 
-const handler = NextAuth({
+export const authOptions = {
   session: {
     strategy: "jwt",
   },
@@ -35,6 +35,8 @@ const handler = NextAuth({
       },
     }),
   ],
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
