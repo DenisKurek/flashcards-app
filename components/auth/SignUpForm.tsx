@@ -2,6 +2,7 @@ import User from "@/lib/model/User";
 import Link from "next/link";
 import React, { SyntheticEvent, useRef } from "react";
 import AuthFormInput from "./AuthFormInput";
+import { useRouter } from "next/navigation";
 
 async function createUser(user: User) {
   const response = await fetch("/api/auth/signup", {
@@ -22,6 +23,7 @@ async function createUser(user: User) {
 }
 
 const SignUpForm = () => {
+  const router = useRouter();
   const emailRef: any = useRef();
   const passwordRef: any = useRef();
   const repeatPasswordRef: any = useRef();
@@ -43,7 +45,9 @@ const SignUpForm = () => {
       password: password,
     };
 
-    createUser(user);
+    const result = await createUser(user);
+
+    router.push("/");
   };
 
   return (
