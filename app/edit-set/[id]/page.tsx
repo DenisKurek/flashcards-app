@@ -26,9 +26,15 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   const updateSet = async (SetBlueprint: SetBlueprint) => {
+    if (set === undefined) {
+      return Error("Set value is not defined");
+    }
     const response = await fetch(`/api/set/${params.id}`, {
       method: "PUT",
-      body: JSON.stringify(SetBlueprint),
+      body: JSON.stringify({
+        ...SetBlueprint,
+        username: set.username,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
