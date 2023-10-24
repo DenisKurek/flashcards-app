@@ -51,7 +51,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <section className="c card w-full  max-w-md space-y-8 bg-secondary p-5">
+    <section className="c card w-full  space-y-8 bg-neutral p-5">
       <h1 className=" font-extrabol mt-6 text-center text-3xl text-black">
         Sign Up
       </h1>

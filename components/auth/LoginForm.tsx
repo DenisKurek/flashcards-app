@@ -22,7 +22,7 @@ const LoginForm = () => {
   };
 
   return (
-    <section className="card w-full max-w-md  space-y-8 bg-secondary p-5">
+    <section className="card w-full  space-y-8 bg-neutral p-5">
       <h1 className="font-extrabol mt-6 text-center text-3xl text-black">
         Login
       </h1>
