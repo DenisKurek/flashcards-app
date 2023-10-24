@@ -11,9 +11,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar  bg-base-100">
-      <div className="navbar-start">
-        <Link href="/" className=" text-xl normal-case">
+    <nav className="navbar mx-auto bg-neutral">
+      <div className="navbar-start m-2">
+        <Link href="/" className=" text-xl normal-case ">
           Home
         </Link>
       </div>
