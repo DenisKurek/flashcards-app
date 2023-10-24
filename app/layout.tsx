@@ -13,9 +13,7 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           <Navbar />
-          <main className="bg flex min-h-screen flex-col items-center justify-between p-24">
-            {children}
-          </main>
+          <main className="flex min-h-screen p-20">{children}</main>
         </SessionProvider>
       </body>
     </html>
