@@ -22,14 +22,15 @@ const FlashcardForm: React.FC<Props> = (props) => {
   return (
     <li
       key={props.flashCard.id}
-      className="card m-2 flex space-y-2 bg-secondary p-4"
+      className="card m-2 flex space-y-2 bg-gray-600 p-4"
     >
       <label htmlFor={`concept-${props.flashCard.id}`}>Concept:</label>
       <input
         type="text"
-        className="form-control"
+        className="input input-bordered input-secondary w-full "
         id={`concept-${props.flashCard.id}`}
         defaultValue={props.flashCard.concept}
+        placeholder="concept"
         onChange={(e) =>
           handleUpdate({
             concept: e.target.value,
@@ -40,9 +41,10 @@ const FlashcardForm: React.FC<Props> = (props) => {
       <label htmlFor={`definition-${props.flashCard.id}`}>Definition:</label>
       <input
         type="text"
-        className="form-control"
+        className="input input-bordered input-secondary w-full "
         id={`definition-${props.flashCard.id}`}
         defaultValue={props.flashCard.definition}
+        placeholder="definition"
         onChange={(e) =>
           handleUpdate({
             concept: props.flashCard.concept,

@@ -14,7 +14,7 @@ const AuthFormInput: React.FC<Props> = (props) => {
       </label>
       <input
         type={props.type}
-        className=" form-control flex w-full  rounded-md p-1"
+        className="input input-bordered input-secondary w-full"
         id={props.id}
         placeholder={props.placeholder}
         autoComplete="off"
