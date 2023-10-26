@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Set, { SetBlueprint } from "@/lib/model/Set";
 import SetEditionForm from "@/components/edit-set/SetEditionForm";
 import { useRouter } from "next/navigation";
+import LoadingPage from "@/app/loading";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [set, setSet] = useState<Set>();
@@ -47,6 +48,6 @@ export default function Page({ params }: { params: { id: string } }) {
   return set ? (
     <SetEditionForm set={set} onSubmit={updateSet} />
   ) : (
-    <p>Loading...</p>
+    <LoadingPage />
   );
 }

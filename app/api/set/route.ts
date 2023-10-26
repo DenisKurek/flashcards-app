@@ -16,7 +16,6 @@ export async function POST(request: Request) {
     client.close();
     return NextResponse.json({ result });
   } catch (error) {
-    console.log("ERROR");
     return new Response("ERROR", {
       status: 500,
     });
@@ -33,7 +32,6 @@ export async function GET(request: Request) {
     client.close();
     return NextResponse.json({ sets });
   } catch (error) {
-    console.log("ERROR");
     return new Response("ERROR", {
       status: 500,
     });
