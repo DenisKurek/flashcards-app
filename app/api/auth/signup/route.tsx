@@ -8,13 +8,14 @@ export async function POST(request: Request) {
 
   const { email, password } = data;
 
-  if (
-    !email ||
-    !email.includes("@") ||
-    !password ||
-    password.trim().length < 5
-  ) {
+  if (!email || !email.includes("@")) {
     return NextResponse.json({ error: "Invalid input" }, { status: 422 });
+  }
+  if (!password || password.trim().length < 5) {
+    return NextResponse.json(
+      { error: "Password is too weak" },
+      { status: 422 },
+    );
   }
 
   const client = await conntectToDatabase();
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
     client.close();
     return NextResponse.json(
       { error: "User allready exists" },
-      { status: 422 }
+      { status: 422 },
     );
   }
 
