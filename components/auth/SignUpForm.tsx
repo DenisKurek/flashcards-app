@@ -51,10 +51,12 @@ const SignUpForm = () => {
   };
 
   return (
-    <section className="container login-form-container">
-      <h1 className=" text-center">Sign Up</h1>
-      <form className="card p-4" onSubmit={submitHandler}>
-        <div className="form-group">
+    <section className="c card w-full  space-y-8 bg-neutral p-5">
+      <h1 className=" font-extrabol mt-6 text-center text-3xl text-black">
+        Sign Up
+      </h1>
+      <form className="mt-8 space-y-6" onSubmit={submitHandler}>
+        <div className=" rounded-md shadow-sm">
           <AuthFormInput
             id="email"
             type="email"
@@ -62,8 +64,6 @@ const SignUpForm = () => {
             label="Email"
             customRef={emailRef}
           />
-        </div>
-        <div className="form-group">
           <AuthFormInput
             id="password"
             type="password"
@@ -79,11 +79,14 @@ const SignUpForm = () => {
             customRef={repeatPasswordRef}
           />
         </div>
-        <div className="row  d-flex  justify-content-center">
-          <button type="submit" className="btn w-25 btn-primary m-2">
+        <div className="block">
+          <button
+            type="submit"
+            className="text-md mx-auto flex w-1/3 justify-center rounded-md bg-primary p-4 font-medium"
+          >
             Submit
           </button>
-          <Link href={"login"} className=" link-info  text-center m-2">
+          <Link href={"login"} className="flex w-full justify-center p-2">
             Login with existing account
           </Link>
         </div>

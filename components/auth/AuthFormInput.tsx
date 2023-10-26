@@ -9,10 +9,12 @@ interface Props {
 const AuthFormInput: React.FC<Props> = (props) => {
   return (
     <div className=" m-2 ">
-      <label htmlFor={props.id}>{props.label}</label>
+      <label htmlFor={props.id} className="label ">
+        {props.label}
+      </label>
       <input
         type={props.type}
-        className="form-control "
+        className=" form-control flex w-full  rounded-md p-1"
         id={props.id}
         placeholder={props.placeholder}
         autoComplete="off"

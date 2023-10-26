@@ -1,7 +1,7 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
-import "bootstrap/dist/css/bootstrap.css";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -10,10 +10,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-dark-subtle">
+      <body>
         <SessionProvider>
           <Navbar />
-          <main>{children}</main>
+          <main className="flex min-h-screen p-20">{children}</main>
         </SessionProvider>
       </body>
     </html>

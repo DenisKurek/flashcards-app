@@ -11,24 +11,28 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-dark bg-dark p-2">
-      <Link href="/" className="navbar-brand">
-        Home
-      </Link>
+    <nav className="navbar mx-auto bg-neutral">
+      <div className="navbar-start m-2">
+        <Link href="/" className=" text-xl normal-case ">
+          Home
+        </Link>
+      </div>
       {session && (
-        <Link href={"/new-set"} className=" fs-4">
+        <Link href={"/new-set"} className=" navbar-center">
           Create new Set
         </Link>
       )}
-      {session ? (
-        <button onClick={logoutHandler} className=" link-dark">
-          Logout
-        </button>
-      ) : (
-        <Link href="/login" className="navbar-text">
-          Login
-        </Link>
-      )}
+      <div className="navbar-end">
+        {session ? (
+          <button onClick={logoutHandler} className="btn btn-ghost">
+            Logout
+          </button>
+        ) : (
+          <Link href="/login" className="btn btn-ghost">
+            Login
+          </Link>
+        )}
+      </div>
     </nav>
   );
 };

@@ -20,18 +20,16 @@ const SetsList = () => {
     getSets();
   }, []);
   return (
-    <ul className=" list-group d-flex justify-content-evenly">
-      <div className="row">
-        {sets.map((set, index) => (
-          <Link
-            href={`edit-set/${set._id?.toString()}`}
-            className=" list-group-item m-2"
-            key={index}
-          >
-            {set.name}
-          </Link>
-        ))}
-      </div>
+    <ul className="container">
+      {sets.map((set, index) => (
+        <Link
+          href={`edit-set/${set._id?.toString()}`}
+          className="card m-5 flex bg-secondary p-4 "
+          key={index}
+        >
+          {set.name}
+        </Link>
+      ))}
     </ul>
   );
 };

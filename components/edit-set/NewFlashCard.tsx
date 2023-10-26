@@ -9,9 +9,13 @@ const NewFlashCard: React.FC<Props> = (props) => {
   return (
     <li
       onClick={() => {
-        props.onClick({id: (new Date).getTime(), concept: "", definition: "" });
+        props.onClick({
+          id: new Date().getTime(),
+          concept: "",
+          definition: "",
+        });
       }}
-      className=" btn list-group-item text-center m-2"
+      className="btn m-2 flex bg-secondary "
       key="createNewFlashcard"
     >
       Create new Flashcard

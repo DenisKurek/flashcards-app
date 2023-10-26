@@ -20,40 +20,39 @@ const FlashcardForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <li key={props.flashCard.id} className=" card list-group-item m-2">
-      <div className="row">
-        <label htmlFor={`concept-${props.flashCard.id}`}>Concept:</label>
-        <input
-          type="text"
-          className="form-control"
-          id={`concept-${props.flashCard.id}`}
-          defaultValue={props.flashCard.concept}
-          onChange={(e) =>
-            handleUpdate({
-              concept: e.target.value,
-              definition: props.flashCard.definition,
-            })
-          }
-        />
-      </div>
-      <div className="row">
-        <label htmlFor={`definition-${props.flashCard.id}`}>Definition:</label>
-        <input
-          type="text"
-          className="form-control"
-          id={`definition-${props.flashCard.id}`}
-          defaultValue={props.flashCard.definition}
-          onChange={(e) =>
-            handleUpdate({
-              concept: props.flashCard.concept,
-              definition: e.target.value,
-            })
-          }
-        />
-      </div>
+    <li
+      key={props.flashCard.id}
+      className="card m-2 flex space-y-2 bg-secondary p-4"
+    >
+      <label htmlFor={`concept-${props.flashCard.id}`}>Concept:</label>
+      <input
+        type="text"
+        className="form-control"
+        id={`concept-${props.flashCard.id}`}
+        defaultValue={props.flashCard.concept}
+        onChange={(e) =>
+          handleUpdate({
+            concept: e.target.value,
+            definition: props.flashCard.definition,
+          })
+        }
+      />
+      <label htmlFor={`definition-${props.flashCard.id}`}>Definition:</label>
+      <input
+        type="text"
+        className="form-control"
+        id={`definition-${props.flashCard.id}`}
+        defaultValue={props.flashCard.definition}
+        onChange={(e) =>
+          handleUpdate({
+            concept: props.flashCard.concept,
+            definition: e.target.value,
+          })
+        }
+      />
       <button
         key={`delete-${props.flashCard.id}`}
-        className="btn-danger"
+        className="btn bg-primary"
         onClick={handleDelate}
       >
         delete
