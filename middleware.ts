@@ -9,5 +9,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/", "/edit-set/:id*", "/new-set", "/api/set"],
+  matcher: ["/edit-set/:id*", "/new-set", "/api/set"],
 };

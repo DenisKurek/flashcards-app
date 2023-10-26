@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import Set from "@/lib/model/Set";
 import Link from "next/link";
 import LoadingPage from "@/app/loading";
+import { useRouter } from "next/navigation";
 
 const SetsList = () => {
   const [sets, setSets] = useState<Set[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     async function getSets() {
@@ -17,6 +19,12 @@ const SetsList = () => {
           "Content-Type": "application/json",
         },
       });
+
+      if (response.redirected) {
+        router.replace("/login");
+        return;
+      }
+
       const { sets } = await response.json();
       setSets(sets);
       setLoading(false);
