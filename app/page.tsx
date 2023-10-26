@@ -1,4 +1,3 @@
-"use client";
 import SetsList from "@/components/SetsList";
 
 export default function HomePage() {

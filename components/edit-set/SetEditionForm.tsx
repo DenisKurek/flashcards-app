@@ -53,7 +53,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
         <input
           id="set-name"
           type="text"
-          className="w-full rounded-md p-1"
+          className="input input-bordered input-primary w-full "
           defaultValue={props.set.name}
           ref={nameRef}
           required

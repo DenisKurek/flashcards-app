@@ -2,12 +2,15 @@
 import { useEffect, useState } from "react";
 import Set from "@/lib/model/Set";
 import Link from "next/link";
+import LoadingPage from "@/app/loading";
 
 const SetsList = () => {
   const [sets, setSets] = useState<Set[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function getSets() {
+      setLoading(true);
       const response = await fetch("api/set", {
         method: "GET",
         headers: {
@@ -16,10 +19,13 @@ const SetsList = () => {
       });
       const { sets } = await response.json();
       setSets(sets);
+      setLoading(false);
     }
     getSets();
   }, []);
-  return (
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <ul className="container">
       {sets.map((set, index) => (
         <Link
