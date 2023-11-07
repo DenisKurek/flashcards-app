@@ -3,6 +3,7 @@ import FlashcardForm from "./FlashcardForm";
 import NewFlashCard from "./NewFlashCard";
 import React, { useState, useRef, useEffect } from "react";
 import Flashcard from "@/lib/model/FlashCard";
+import SetDetails from "./SetDetails";
 
 interface Props {
   set: SetBlueprint;
@@ -46,19 +47,8 @@ const SetEditionForm: React.FC<Props> = (props) => {
       className="container card w-full space-y-3 bg-neutral p-3"
       onSubmit={handleSubmit}
     >
-      <div className="">
-        <label htmlFor="set-name" className="label">
-          Set Name:{" "}
-        </label>
-        <input
-          id="set-name"
-          type="text"
-          className="input input-bordered input-primary w-full "
-          defaultValue={props.set.name}
-          ref={nameRef}
-          required
-        />
-      </div>
+      <SetDetails name={props.set.name} nameRef={nameRef}/>
+
       <ul>
         {flashCards.map((flashCard) => (
           <FlashcardForm
