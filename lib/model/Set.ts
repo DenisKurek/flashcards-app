@@ -8,5 +8,6 @@ export default interface Set extends SetBlueprint {
 
 export interface SetBlueprint {
   name: string;
+  tags: string[];
   flashcards: Flashcard[];
 }

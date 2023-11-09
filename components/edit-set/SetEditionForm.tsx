@@ -11,7 +11,7 @@ interface Props {
 }
 
 const SetEditionForm: React.FC<Props> = (props) => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(props.set.tags);
   const [flashCards, setFlashcards] = useState<Flashcard[]>(
     props.set.flashcards,
   );
@@ -21,6 +21,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
     e.preventDefault();
     props.onSubmit({
       name: nameRef.current.value,
+      tags: tags,
       flashcards: flashCards,
     });
   };
@@ -48,7 +49,12 @@ const SetEditionForm: React.FC<Props> = (props) => {
       className="container card w-full space-y-3 bg-neutral p-3"
       onSubmit={handleSubmit}
     >
-      <SetDetails name={props.set.name} nameRef={nameRef} tags={tags} onTagsUpdate={setTags}/>
+      <SetDetails
+        name={props.set.name}
+        nameRef={nameRef}
+        tags={tags}
+        onTagsUpdate={setTags}
+      />
 
       <ul>
         {flashCards.map((flashCard) => (

@@ -21,7 +21,7 @@ export default function HomePage() {
 
   return (
     <SetEditionForm
-      set={{ name: "newSet", flashcards: [] }}
+      set={{ name: "newSet", tags: [], flashcards: [] }}
       onSubmit={createSet}
     />
   );
