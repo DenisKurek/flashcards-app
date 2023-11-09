@@ -5,7 +5,7 @@ import Set, { SetBlueprint } from "@/lib/model/Set";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const client = await conntectToDatabase();
   const db = client.db();
@@ -17,7 +17,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const client = await conntectToDatabase();
   const db = client.db();
@@ -26,9 +26,23 @@ export async function PUT(
 
   const result = await collection.replaceOne(
     { _id: new ObjectId(params.id) },
-    set
+    set,
   );
 
   client.close();
   return NextResponse.json({ set }, { status: 200 });
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
+  const client = await conntectToDatabase();
+  const db = client.db();
+  const collection = db.collection("sets");
+
+  const result = await collection.deleteOne({ _id: new ObjectId(params.id) });
+
+  client.close();
+  return NextResponse.json({ result }, { status: 200 });
 }

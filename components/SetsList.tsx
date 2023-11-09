@@ -4,6 +4,8 @@ import Set from "@/lib/model/Set";
 import Link from "next/link";
 import LoadingPage from "@/app/loading";
 import { useRouter } from "next/navigation";
+import CloseIcon from "./ui/CloseIcon";
+import { ObjectId } from "mongodb";
 
 const SetsList = () => {
   const [sets, setSets] = useState<Set[]>([]);
@@ -31,18 +33,38 @@ const SetsList = () => {
     }
     getSets();
   }, []);
+
+  const HandleSetDelete = async (id: ObjectId) => {
+    const response = await fetch(`/api/set/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      setSets((prev) => prev.filter((set) => set._id != id));
+    }
+  };
+
   return loading ? (
     <LoadingPage />
   ) : (
     <ul className="container">
       {sets.map((set, index) => (
-        <Link
-          href={`edit-set/${set._id?.toString()}`}
-          className="card m-5 flex bg-secondary p-4 "
-          key={index}
-        >
-          {set.name}
-        </Link>
+        <div className="card m-5 flex bg-secondary p-4">
+          <div className="flex">
+            <Link
+              className="flex-grow"
+              href={`edit-set/${set._id?.toString()}`}
+              key={index}
+            >
+              {set.name}
+            </Link>
+            <div className="m-auto">
+              <CloseIcon onRemove={() => HandleSetDelete(set._id)} />
+            </div>
+          </div>
+        </div>
       ))}
     </ul>
   );
