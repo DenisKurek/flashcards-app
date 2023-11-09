@@ -3,7 +3,7 @@ import FlashcardForm from "./FlashcardForm";
 import NewFlashCard from "./NewFlashCard";
 import React, { useState, useRef, useEffect } from "react";
 import Flashcard from "@/lib/model/FlashCard";
-import SetDetails from "./SetDetails";
+import SetDetails from "./set-details/SetDetails";
 
 interface Props {
   set: SetBlueprint;
@@ -11,6 +11,7 @@ interface Props {
 }
 
 const SetEditionForm: React.FC<Props> = (props) => {
+  const [tags, setTags] = useState<string[]>([]);
   const [flashCards, setFlashcards] = useState<Flashcard[]>(
     props.set.flashcards,
   );
@@ -47,7 +48,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
       className="container card w-full space-y-3 bg-neutral p-3"
       onSubmit={handleSubmit}
     >
-      <SetDetails name={props.set.name} nameRef={nameRef}/>
+      <SetDetails name={props.set.name} nameRef={nameRef} tags={tags} onTagsUpdate={setTags}/>
 
       <ul>
         {flashCards.map((flashCard) => (
