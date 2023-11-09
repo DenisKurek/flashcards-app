@@ -6,6 +6,7 @@ import LoadingPage from "@/app/loading";
 import { useRouter } from "next/navigation";
 import CloseIcon from "./ui/CloseIcon";
 import { ObjectId } from "mongodb";
+import { getStateColor, LearningState } from "@/lib/model/FlashCard";
 
 const SetsList = () => {
   const [sets, setSets] = useState<Set[]>([]);
@@ -51,7 +52,7 @@ const SetsList = () => {
   ) : (
     <ul className="container">
       {sets.map((set, index) => (
-        <div className="card m-5 flex bg-secondary p-4">
+        <div className="card m-5 flex bg-primary p-4">
           <div className="flex">
             <Link
               className="flex-grow"
@@ -63,6 +64,28 @@ const SetsList = () => {
             <div className="m-auto">
               <CloseIcon onRemove={() => HandleSetDelete(set._id)} />
             </div>
+          </div>
+          <div className="">
+            {[
+              LearningState.NOT_STARTED,
+              LearningState.RECENTLY_STARTED,
+              LearningState.LEARNING,
+              LearningState.ALMOST_MASTERED,
+              LearningState.MASTERED,
+            ].map((state) => (
+              <div
+                key={state}
+                className={`${
+                  state && getStateColor(state)
+                } badge m-2 gap-2 text-black`}
+              >
+                {state + ": "}
+                {
+                  set.flashcards.filter((flashcard) => flashcard.state == state)
+                    .length
+                }
+              </div>
+            ))}
           </div>
         </div>
       ))}
