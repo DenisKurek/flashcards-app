@@ -16,50 +16,15 @@ const StateColor = {
   [LearningState.MASTERED]: "bg-green-500",
 };
 
-const SetsList = () => {
-  const [sets, setSets] = useState<Set[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
+interface Props {
+  sets: Set[];
+  onRemove?: (ObjectId: ObjectId) => void;
+}
 
-  useEffect(() => {
-    async function getSets() {
-      setLoading(true);
-      const response = await fetch("api/set", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.redirected) {
-        router.replace("/login");
-        return;
-      }
-
-      const { sets } = await response.json();
-      setSets(sets);
-      setLoading(false);
-    }
-    getSets();
-  }, []);
-
-  const HandleSetDelete = async (id: ObjectId) => {
-    const response = await fetch(`/api/set/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      setSets((prev) => prev.filter((set) => set._id != id));
-    }
-  };
-
-  return loading ? (
-    <LoadingPage />
-  ) : (
+const SetsList: React.FC<Props> = (props) => {
+  return (
     <ul className="container">
-      {sets.map((set, index) => (
+      {props.sets.map((set, index) => (
         <div className="card m-5 flex bg-primary p-4">
           <div className="flex">
             <Link
@@ -69,9 +34,15 @@ const SetsList = () => {
             >
               {set.name}
             </Link>
-            <div className="m-auto">
-              <CloseIcon onRemove={() => HandleSetDelete(set._id)} />
-            </div>
+            {props.onRemove ? (
+              <div className="absolute right-2 ">
+                <CloseIcon
+                  onRemove={() => props.onRemove && props.onRemove(set._id)}
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="">
             {[
