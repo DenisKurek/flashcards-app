@@ -6,7 +6,15 @@ import LoadingPage from "@/app/loading";
 import { useRouter } from "next/navigation";
 import CloseIcon from "./ui/CloseIcon";
 import { ObjectId } from "mongodb";
-import { getStateColor, LearningState } from "@/lib/model/FlashCard";
+import { LearningState } from "@/lib/model/FlashCard";
+
+const StateColor = {
+  [LearningState.NOT_STARTED]: "bg-red-900",
+  [LearningState.RECENTLY_STARTED]: "bg-red-200",
+  [LearningState.LEARNING]: "bg-yellow-400",
+  [LearningState.ALMOST_MASTERED]: "bg-green-200",
+  [LearningState.MASTERED]: "bg-green-500",
+};
 
 const SetsList = () => {
   const [sets, setSets] = useState<Set[]>([]);
@@ -76,7 +84,7 @@ const SetsList = () => {
               <div
                 key={state}
                 className={`${
-                  state && getStateColor(state)
+                  state && StateColor[state]
                 } badge m-2 gap-2 text-black`}
               >
                 {state + ": "}

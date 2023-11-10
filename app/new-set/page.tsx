@@ -21,7 +21,12 @@ export default function HomePage() {
 
   return (
     <SetEditionForm
-      set={{ name: "newSet", tags: [], flashcards: [] }}
+      set={{
+        name: "newSet",
+        tags: [],
+        flashcards: [],
+        language: { concept: "English", definition: "English" },
+      }}
       onSubmit={createSet}
     />
   );

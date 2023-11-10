@@ -1,4 +1,4 @@
-import { SetBlueprint } from "@/lib/model/Set";
+import { LanguageSettings, SetBlueprint } from "@/lib/model/Set";
 import FlashcardForm from "./FlashcardForm";
 import NewFlashCard from "./NewFlashCard";
 import React, { useState, useRef, useEffect } from "react";
@@ -15,6 +15,9 @@ const SetEditionForm: React.FC<Props> = (props) => {
   const [flashCards, setFlashcards] = useState<Flashcard[]>(
     props.set.flashcards,
   );
+  const [language, setLanguage] = useState<LanguageSettings>(
+    props.set.language,
+  );
   const nameRef: any = useRef();
 
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -23,6 +26,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
       name: nameRef.current.value,
       tags: tags,
       flashcards: flashCards,
+      language: language,
     });
   };
 
@@ -63,6 +67,8 @@ const SetEditionForm: React.FC<Props> = (props) => {
             key={flashCard.id}
             onUpdate={handleFlashCardUpdate}
             onDelete={handleFlashCardDelete}
+            language={language}
+            onLanguageChange={setLanguage}
           />
         ))}
         <NewFlashCard onClick={handleFlashCardAddition} />

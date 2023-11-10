@@ -9,5 +9,11 @@ export default interface Set extends SetBlueprint {
 export interface SetBlueprint {
   name: string;
   tags: string[];
+  language: LanguageSettings;
   flashcards: Flashcard[];
+}
+
+export interface LanguageSettings {
+  concept: string;
+  definition: string;
 }
