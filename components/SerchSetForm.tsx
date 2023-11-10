@@ -1,8 +1,10 @@
 import TagSection from "@/components/edit-set/set-details/TagSection";
 import { SearchParameters } from "@/lib/model/Set";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import ErrorMessage from "./ErrorMessage";
 
 interface Props {
+  error?: string;
   onSubmit: (SearchParameters: SearchParameters) => void;
 }
 
@@ -55,6 +57,7 @@ const SetSearchForm: React.FC<Props> = (props) => {
       className="container card w-full space-y-3 bg-neutral p-3"
       onSubmit={handleSubmit}
     >
+      {props.error && <ErrorMessage message={props.error} />}
       <div className="flex">
         <label
           className="input-group input-group-vertical mx-2"

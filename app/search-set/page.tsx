@@ -6,7 +6,9 @@ import { useState } from "react";
 
 export default function FindSet() {
   const [sets, setSets] = useState<Set[]>([]);
+  const [error, setError] = useState<string | undefined>(undefined);
   const handleSubmit = async (parameters: SearchParameters) => {
+    setError(undefined);
     const response = await fetch("/api/set/search", {
       method: "POST",
       body: JSON.stringify(parameters),
@@ -15,13 +17,15 @@ export default function FindSet() {
       },
     });
     const data = await response.json();
-    setSets(data.sets);
+    data.sets.length > 0
+      ? setSets(data.sets)
+      : setError("No messages maching criteria were found");
     return response;
   };
 
   return sets.length > 0 ? (
     <SetsList sets={sets} />
   ) : (
-    <SetSearchForm onSubmit={handleSubmit} />
+    <SetSearchForm error={error} onSubmit={handleSubmit} />
   );
 }

@@ -17,7 +17,7 @@ const Navbar = () => {
           Home
         </Link>
       </div>
-      {session && (
+      {
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost navbar-center">
             Actions
@@ -26,15 +26,17 @@ const Navbar = () => {
             tabIndex={0}
             className="menu dropdown-content rounded-box z-[1] w-52 bg-neutral p-2 shadow"
           >
-            <li>
-              <Link href={"/new-set"}>Create new Set</Link>
-            </li>
+            {session && (
+              <li>
+                <Link href={"/new-set"}>Create new Set</Link>
+              </li>
+            )}
             <li>
               <Link href={"/search-set"}>Search Sets library </Link>
             </li>
           </ul>
         </div>
-      )}
+      }
       <div className="navbar-end">
         {session ? (
           <button onClick={logoutHandler} className="btn btn-ghost">
