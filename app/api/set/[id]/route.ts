@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 import { conntectToDatabase } from "@/lib/utils/db";
-import Set, { SetBlueprint } from "@/lib/model/Set";
+import Set from "@/lib/model/Set";
 
 export async function GET(
   request: Request,

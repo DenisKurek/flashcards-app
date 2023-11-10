@@ -25,7 +25,7 @@ const SetsList: React.FC<Props> = (props) => {
   return (
     <ul className="container">
       {props.sets.map((set, index) => (
-        <div className="card m-5 flex bg-primary p-4">
+        <div key={set._id.toString()} className="card m-5 flex bg-primary p-4">
           <div className="flex">
             <Link
               className="flex-grow"

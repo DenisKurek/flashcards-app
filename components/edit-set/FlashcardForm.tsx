@@ -86,7 +86,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
               </option>
             </select>
           </div>
-          <button className="m-2 flex">
+          <button className="m-2 flex text-black">
             <CloseIcon onRemove={handleDelate} />
           </button>
         </div>

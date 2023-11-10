@@ -1,13 +1,14 @@
 import { LanguageSettings, SetBlueprint } from "@/lib/model/Set";
 import FlashcardForm from "./FlashcardForm";
 import NewFlashCard from "./NewFlashCard";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Flashcard from "@/lib/model/FlashCard";
 import SetDetails from "./set-details/SetDetails";
 
 interface Props {
   set: SetBlueprint;
   onSubmit: (set: SetBlueprint) => void;
+  submitButtonLabel?: string;
 }
 
 const SetEditionForm: React.FC<Props> = (props) => {
@@ -75,7 +76,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
       </ul>
       <div className="flex grow justify-center">
         <button className=" btn mt-auto w-1/3 bg-primary" type="submit">
-          Save changes
+          {props.submitButtonLabel ? props.submitButtonLabel : "Save changes"}
         </button>
       </div>
     </form>
