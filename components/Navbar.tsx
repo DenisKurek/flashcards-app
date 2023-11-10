@@ -18,9 +18,22 @@ const Navbar = () => {
         </Link>
       </div>
       {session && (
-        <Link href={"/new-set"} className=" navbar-center">
-          Create new Set
-        </Link>
+        <div className="dropdown">
+          <label tabIndex={0} className="btn btn-ghost navbar-center">
+            Actions
+          </label>
+          <ul
+            tabIndex={0}
+            className="menu dropdown-content rounded-box z-[1] w-52 bg-neutral p-2 shadow"
+          >
+            <li>
+              <Link href={"/new-set"}>Create new Set</Link>
+            </li>
+            <li>
+              <Link href={"/search-set"}>Search Sets library </Link>
+            </li>
+          </ul>
+        </div>
       )}
       <div className="navbar-end">
         {session ? (

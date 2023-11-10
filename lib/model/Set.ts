@@ -17,3 +17,9 @@ export interface LanguageSettings {
   concept: string;
   definition: string;
 }
+
+export interface SearchParameters {
+  fromLanguage: string;
+  toLanguage: string;
+  tags: string[];
+}
