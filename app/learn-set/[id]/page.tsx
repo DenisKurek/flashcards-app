@@ -4,6 +4,12 @@ import LearnFlashcardForm from "@/components/learn-set/learnFlashcardForm";
 import Set from "@/lib/model/Set";
 import { useRouter } from "next/navigation";
 import { SyntheticEvent, useEffect, useState } from "react";
+import {
+  getSetRequest,
+  updateSetRequest,
+} from "@/lib/api-requests/Set-requests";
+import Flashcard from "@/lib/model/FlashCard";
+import { updateFlashcard } from "@/lib/utils/flashcardUtils";
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -11,11 +17,23 @@ export default function Page({ params }: { params: { id: string } }) {
   const [flashCardId, setFlashCardId] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = (
+    e: SyntheticEvent,
+    actual: string,
+    expected: string,
+  ) => {
     e.preventDefault();
+    if (!set) {
+      throw new Error("set not initialized");
+    }
+    const flashcard: Flashcard = set.flashcards[flashCardId];
+    const updatedFlashcard = updateFlashcard(flashcard, actual === expected);
+
+    set.flashcards[flashCardId] = updatedFlashcard;
     if (set && flashCardId < set?.flashcards.length - 1) {
       setFlashCardId((prev) => prev + 1);
     } else {
+      updateSetRequest(set);
       router.push(`/learn-set/${params.id}/summary`);
     }
   };
@@ -23,19 +41,14 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     async function getSet() {
       setLoading(true);
-      const response = await fetch(`/api/set/${params.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
+      try {
+        const data = await getSetRequest(params.id);
+        setSet(data);
         setLoading(false);
-        throw console.error(response);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
       }
-      const data = await response.json();
-
-      setSet(data.set);
       setLoading(false);
     }
     getSet();

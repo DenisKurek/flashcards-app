@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 import { conntectToDatabase } from "@/lib/utils/db";
-import Set from "@/lib/model/Set";
+import Set, { SetBlueprint } from "@/lib/model/Set";
 
 export async function GET(
   request: Request,
@@ -23,11 +23,19 @@ export async function PUT(
   const db = client.db();
   const collection = db.collection("sets");
   const set: Set = await request.json();
+  const updatedSet: SetBlueprint = {
+    name: set.name,
+    tags: set.tags,
+    flashcards: set.flashcards,
+    language: set.language,
+  };
 
   const result = await collection.replaceOne(
     { _id: new ObjectId(params.id) },
-    set,
+    { ...updatedSet, username: set.username },
   );
+
+  console.log(result);
 
   client.close();
   return NextResponse.json({ set }, { status: 200 });
