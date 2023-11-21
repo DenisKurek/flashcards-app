@@ -1,12 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
 import Set from "@/lib/model/Set";
 import Link from "next/link";
-import LoadingPage from "@/app/loading";
-import { useRouter } from "next/navigation";
 import CloseIcon from "./ui/CloseIcon";
 import { ObjectId } from "mongodb";
 import { LearningState } from "@/lib/model/FlashCard";
+import EditIcon from "./ui/EditIcon";
+import { useRouter } from "next/navigation";
 
 const StateColor = {
   [LearningState.NOT_STARTED]: "bg-red-900",
@@ -22,29 +21,32 @@ interface Props {
 }
 
 const SetsList: React.FC<Props> = (props) => {
+  const router = useRouter();
   return (
     <ul className="container">
-      {props.sets.map((set, index) => (
-        <div key={set._id.toString()} className="card m-5 flex bg-primary p-4">
+      {props.sets.map((set) => (
+        <div key={set._id.toString()} className="card m-5 bg-primary p-4">
           <div className="flex">
-            <Link
-              className="flex-grow"
-              href={`edit-set/${set._id?.toString()}`}
-              key={index}
+            <h2
+              className="card-title cursor-pointer"
+              onClick={() => router.push(`learn-set/${set._id?.toString()}`)}
             >
               {set.name}
-            </Link>
-            {props.onRemove ? (
-              <div className="absolute right-2 ">
+            </h2>
+            <div className="card-actions flex-grow justify-end">
+              <EditIcon
+                onClick={() => router.push(`edit-set/${set._id?.toString()}`)}
+              />
+              {props.onRemove ? (
                 <CloseIcon
                   onRemove={() => props.onRemove && props.onRemove(set._id)}
                 />
-              </div>
-            ) : (
-              ""
-            )}
+              ) : (
+                ""
+              )}
+            </div>
           </div>
-          <div className="">
+          <div>
             {[
               LearningState.NOT_STARTED,
               LearningState.RECENTLY_STARTED,
