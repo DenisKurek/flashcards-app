@@ -1,6 +1,6 @@
 import Flashcard from "@/lib/model/FlashCard";
 import { useRouter } from "next/navigation";
-import { SyntheticEvent, useState, useRef } from "react";
+import { SyntheticEvent, useState, useRef, useEffect } from "react";
 import EditIcon from "../ui/EditIcon";
 import FlipIcon from "../ui/FlipIcon";
 
@@ -15,6 +15,7 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
   const router = useRouter();
   const [fliped, setFliped] = useState<boolean>(true);
   const [placecholder, setPlacecholder] = useState<string>();
+  const [borderColor, setborderColor] = useState<string | undefined>();
 
   const getDisplayedPart = (fliped: boolean) => {
     return fliped ? props.flashCard.concept : props.flashCard.definition;
@@ -30,8 +31,20 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (e: SyntheticEvent) => {
-    props.onSubmit(e, answerRef.current.value, getHiddenPart(fliped));
-    answerRef.current.value = "";
+    e.preventDefault();
+    const currentValue = answerRef.current.value;
+    const correctValue = getHiddenPart(fliped);
+    setborderColor(
+      currentValue === correctValue && !placecholder
+        ? "border-green-600"
+        : "border-red-600",
+    );
+    setTimeout(() => {
+      props.onSubmit(e, currentValue, correctValue);
+      setborderColor(undefined);
+      answerRef.current.value = "";
+      setPlacecholder(undefined);
+    }, 2_000);
   };
 
   return (
@@ -51,7 +64,9 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
         <input
           id="answer"
           type="text"
-          className="input input-bordered input-primary"
+          className={`input input-bordered input-primary ${
+            borderColor ? borderColor : ""
+          }`}
           ref={answerRef}
           placeholder={placecholder}
         />
