@@ -31,9 +31,9 @@ export default function Page({ params }: { params: { id: string } }) {
     if (!set) {
       throw new Error("set not initialized");
     }
-    ctx.addAnswer({ actual, expected });
     const flashcard: Flashcard = set.flashcards[flashCardId];
     const updatedFlashcard = updateFlashcard(flashcard, actual === expected);
+    ctx.addAnswer({ actual, expected }, updatedFlashcard.state);
     set.flashcards[flashCardId] = updatedFlashcard;
 
     if (set && flashCardId < set?.flashcards.length - 1) {
@@ -52,6 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
       setLoading(false);
     }
     getSet();
+    ctx.clear();
   }, [params.id]);
 
   return loading ? (
