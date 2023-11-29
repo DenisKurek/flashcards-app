@@ -5,6 +5,10 @@ import SetEditionForm from "@/components/edit-set/SetEditionForm";
 import { useRouter } from "next/navigation";
 import LoadingPage from "@/app/loading";
 import { useSession } from "next-auth/react";
+import {
+  getSetRequest,
+  updateSetRequest,
+} from "@/lib/api-requests/Set-requests";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [set, setSet] = useState<Set>();
@@ -13,34 +17,24 @@ export default function Page({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     async function getSet() {
-      const response = await fetch(`/api/set/${params.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw console.error(response);
+      try {
+        const data = await getSetRequest(params.id);
+        setSet(data);
+      } catch (error) {
+        console.log(error);
       }
-      const data = await response.json();
-      setSet(data.set);
     }
     getSet();
   }, [params.id]);
 
-  const updateSet = async (SetBlueprint: SetBlueprint) => {
+  const updateSet = async (setBlueprint: SetBlueprint) => {
     if (set === undefined) {
       return Error("Set value is not defined");
     }
-    const response = await fetch(`/api/set/${params.id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        ...SetBlueprint,
-        username: set.username,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await updateSetRequest({
+      ...setBlueprint,
+      _id: set._id,
+      username: set.username,
     });
     if (response.ok) {
       router.push("/");

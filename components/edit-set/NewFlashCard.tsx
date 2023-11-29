@@ -16,10 +16,10 @@ const NewFlashCard: React.FC<Props> = (props) => {
           state: LearningState.NOT_STARTED,
         });
       }}
-      className="btn m-2 flex bg-secondary "
+      className="btn btn-secondary btn-outline m-2 flex"
       key="createNewFlashcard"
     >
-      Create new Flashcard
+      +
     </li>
   );
 };

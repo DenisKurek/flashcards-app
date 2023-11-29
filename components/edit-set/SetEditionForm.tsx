@@ -51,7 +51,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
 
   return (
     <form
-      className="container card w-full space-y-3 bg-neutral p-3"
+      className="container card w-full min-w-fit space-y-3 bg-neutral p-3"
       onSubmit={handleSubmit}
     >
       <SetDetails

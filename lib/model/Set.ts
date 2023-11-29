@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import Flashcard from "./FlashCard";
 
 export default interface Set extends SetBlueprint {
-  username: String;
+  username: string;
   _id: ObjectId;
 }
 
