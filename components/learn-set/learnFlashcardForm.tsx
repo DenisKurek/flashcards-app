@@ -1,6 +1,6 @@
 import Flashcard from "@/lib/model/FlashCard";
 import { useRouter } from "next/navigation";
-import { SyntheticEvent, useState, useRef, useEffect } from "react";
+import { SyntheticEvent, useState, useRef } from "react";
 import EditIcon from "../ui/EditIcon";
 import FlipIcon from "../ui/FlipIcon";
 
@@ -36,8 +36,8 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
     const correctValue = getHiddenPart(fliped);
     setborderColor(
       currentValue === correctValue && !placecholder
-        ? "border-green-600"
-        : "border-red-600",
+        ? "input-success"
+        : "input-error",
     );
     setTimeout(() => {
       props.onSubmit(e, currentValue, correctValue);
@@ -64,9 +64,7 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
         <input
           id="answer"
           type="text"
-          className={`input input-bordered input-primary ${
-            borderColor ? borderColor : ""
-          }`}
+          className={`input ${borderColor ? borderColor : "input-primary"}`}
           ref={answerRef}
           placeholder={placecholder}
         />

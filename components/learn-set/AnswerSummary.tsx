@@ -1,3 +1,4 @@
+import { StateColor } from "@/lib/model/FlashCard";
 import { Answer } from "@/store/Learning-set-Context";
 
 interface Props<> {
@@ -10,12 +11,17 @@ function getColor(isCorrect: boolean) {
 }
 
 const AnswerSummary: React.FC<Props> = (props) => {
+  const state = props.answer.newState;
   return (
-    <tr className={getColor(props.answer.isCorrect)}>
+    <tr key={props.index} className={getColor(props.answer.isCorrect)}>
       <th>{props.index}</th>
       <td>{props.answer.actual}</td>
       <td>{props.answer.expected}</td>
-      <td>{props.answer.newState}</td>
+      <td
+        className={`${state && StateColor[state]} badge m-2 gap-2 text-black`}
+      >
+        {state + ": "}
+      </td>
     </tr>
   );
 };

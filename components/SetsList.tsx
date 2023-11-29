@@ -1,19 +1,10 @@
 "use client";
 import Set from "@/lib/model/Set";
-import Link from "next/link";
 import CloseIcon from "./ui/CloseIcon";
 import { ObjectId } from "mongodb";
-import { LearningState } from "@/lib/model/FlashCard";
+import { LearningState, StateColor } from "@/lib/model/FlashCard";
 import EditIcon from "./ui/EditIcon";
 import { useRouter } from "next/navigation";
-
-const StateColor = {
-  [LearningState.NOT_STARTED]: "bg-red-900",
-  [LearningState.RECENTLY_STARTED]: "bg-red-200",
-  [LearningState.LEARNING]: "bg-yellow-400",
-  [LearningState.ALMOST_MASTERED]: "bg-green-200",
-  [LearningState.MASTERED]: "bg-green-500",
-};
 
 interface Props {
   sets: Set[];

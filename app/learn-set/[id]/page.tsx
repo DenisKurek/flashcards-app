@@ -15,9 +15,14 @@ import {
   AnswersContext,
 } from "@/store/Learning-set-Context";
 
+const shuffled = (array: []) => {
+  return array.slice().sort(() => Math.random() - 0.5);
+};
+
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [set, setSet] = useState<Set>();
+  const [flashCards, setFlashCards] = useState<Flashcard[]>([]);
   const [flashCardId, setFlashCardId] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const ctx = useContext(AnswersContext) as AnswerContextType;
@@ -31,14 +36,21 @@ export default function Page({ params }: { params: { id: string } }) {
     if (!set) {
       throw new Error("set not initialized");
     }
-    const flashcard: Flashcard = set.flashcards[flashCardId];
+    const flashcard: Flashcard = flashCards[flashCardId];
     const updatedFlashcard = updateFlashcard(flashcard, actual === expected);
     ctx.addAnswer({ actual, expected }, updatedFlashcard.state);
-    set.flashcards[flashCardId] = updatedFlashcard;
+    flashCards[flashCardId] = updatedFlashcard;
 
-    if (set && flashCardId < set?.flashcards.length - 1) {
+    if (flashCards && flashCardId < flashCards.length - 1) {
       setFlashCardId((prev) => prev + 1);
     } else {
+      set.flashcards.map((flashCard, index) => {
+        flashCards.forEach((updatedFlashcard) => {
+          if (updatedFlashcard.id === flashCard.id) {
+            set.flashcards[index] = updatedFlashcard;
+          }
+        });
+      });
       updateSetRequest(set);
       router.push(`${params.id}/summary`);
     }
@@ -49,21 +61,22 @@ export default function Page({ params }: { params: { id: string } }) {
       setLoading(true);
       const data = await getSetRequest(params.id);
       setSet(data);
+      setFlashCards(shuffled(data.flashcards));
+      ctx.clear();
       setLoading(false);
     }
     getSet();
-    ctx.clear();
   }, [params.id]);
 
   return loading ? (
     <LoadingPage />
   ) : (
     <div className="container ">
-      {set?.flashcards[flashCardId] && (
+      {set && flashCards[flashCardId] && (
         <LearnFlashcardForm
           setId={set._id.toString()}
           onSubmit={handleSubmit}
-          flashCard={set.flashcards[flashCardId]}
+          flashCard={flashCards[flashCardId]}
         />
       )}
     </div>
