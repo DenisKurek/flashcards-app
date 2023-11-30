@@ -8,16 +8,21 @@ import {
   getSetRequest,
   updateSetRequest,
 } from "@/lib/api-requests/Set-requests";
-import Flashcard from "@/lib/model/FlashCard";
+import Flashcard, { LearningState } from "@/lib/model/FlashCard";
 import { updateFlashcard } from "@/lib/utils/flashcardUtils";
 import {
   AnswerContextType,
   AnswersContext,
 } from "@/store/Learning-set-Context";
 import { updateSet } from "@/lib/utils/SetUtils";
-
-const shuffled = (array: []) => {
-  return array.slice().sort(() => Math.random() - 0.5);
+const MAX_INDEX = 5;
+const shuffled = (array: Flashcard[]) => {
+  const order = Object.values(LearningState);
+  return array
+    .slice()
+    .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
+    .slice(0, Math.min(array.length, MAX_INDEX))
+    .sort(() => Math.random() - 0.5);
 };
 
 export default function Page({ params }: { params: { id: string } }) {

@@ -4,7 +4,6 @@ import { getAllSetsRequest } from "@/lib/api-requests/Set-requests";
 import Set from "@/lib/model/Set";
 import { ObjectId } from "mongodb";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingPage from "./loading";
 
@@ -37,11 +36,11 @@ export default function HomePage() {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="container">
+    <div className="container ">
       <SetsList sets={sets} onRemove={handleSetDelete} />
       <Link
         href="/learn-set/daily-set"
-        className="btn btn-secondary m-auto flex"
+        className="btn btn-secondary m-auto flex w-fit "
       >
         Generate Daily Set
       </Link>
