@@ -19,7 +19,11 @@ const SummaryTable: React.FC = () => {
       </thead>
       <tbody className=" text-black">
         {ctx.answers.map((answer, index) => (
-          <AnswerSummary index={index} answer={answer} />
+          <AnswerSummary
+            key={`answer-${index}`}
+            index={index}
+            answer={answer}
+          />
         ))}
       </tbody>
     </table>
