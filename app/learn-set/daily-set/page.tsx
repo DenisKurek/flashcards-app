@@ -9,7 +9,7 @@ import {
   updateSetRequest,
 } from "@/lib/api-requests/Set-requests";
 import Flashcard, { LearningState } from "@/lib/model/FlashCard";
-import { updateFlashcard } from "@/lib/utils/flashcardUtils";
+import { getRandomSubset, updateFlashcard } from "@/lib/utils/flashcardUtils";
 import {
   AnswerContextType,
   AnswersContext,
@@ -68,15 +68,7 @@ export default function Page({ params }: { params: { id: string } }) {
       sets.forEach(
         (set) => (flashcardsArr = flashcardsArr.concat(set.flashcards)),
       );
-
-      //TODO replace with flashcard logic
-      setFlashCards(
-        shuffled(
-          flashcardsArr.filter(
-            (flashCard) => flashCard.state != LearningState.MASTERED,
-          ),
-        ),
-      );
+      setFlashCards(getRandomSubset(flashcardsArr));
       ctx.clear();
       setLoading(false);
     }

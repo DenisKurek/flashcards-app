@@ -7,7 +7,7 @@ export function updateAllSets(sets: Set[], flashcards: Flashcard[]): Set[] {
 
 export function updateSet(set: Set, flashcards: Flashcard[]): Set {
   const updatedSet = { ...set };
-  updatedSet.flashcards.map((flashCard, index) => {
+  updatedSet.flashcards.map((flashCard) => {
     flashcards.forEach((updatedFlashcard) => {
       if (flashCard.id === updatedFlashcard.id) {
         return updatedFlashcard;

@@ -29,14 +29,10 @@ export async function PUT(
     flashcards: set.flashcards,
     language: set.language,
   };
-
   const result = await collection.replaceOne(
     { _id: new ObjectId(params.id) },
     { ...updatedSet, username: set.username },
   );
-
-  console.log(result);
-
   client.close();
   return NextResponse.json({ set }, { status: 200 });
 }

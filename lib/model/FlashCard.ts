@@ -6,6 +6,7 @@ export interface FlashcardBlueprint {
   concept: string;
   definition: string;
   state: LearningState;
+  lastUpdate: Date;
 }
 
 export enum LearningState {

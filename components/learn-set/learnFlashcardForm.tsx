@@ -42,7 +42,9 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
     setTimeout(() => {
       props.onSubmit(e, currentValue, correctValue);
       setborderColor(undefined);
-      answerRef.current.value = "";
+      if (answerRef.current.value) {
+        answerRef.current.value = "";
+      }
       setPlacecholder(undefined);
     }, 2_000);
   };
