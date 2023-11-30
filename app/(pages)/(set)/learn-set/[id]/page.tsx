@@ -15,6 +15,7 @@ import {
   AnswersContext,
 } from "@/store/Learning-set-Context";
 import { updateSet } from "@/lib/utils/SetUtils";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -63,6 +64,13 @@ export default function Page({ params }: { params: { id: string } }) {
     <LoadingPage />
   ) : (
     <div className="container ">
+      {flashCards.length === 0 && (
+        <ErrorMessage
+          message={
+            "You Have no more flashCards from this set to repeat today. "
+          }
+        />
+      )}
       {set && flashCards[flashCardId] && (
         <LearnFlashcardForm
           setId={set._id.toString()}

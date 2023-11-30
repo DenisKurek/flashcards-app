@@ -1,3 +1,4 @@
+import { redirect, useRouter } from "next/navigation";
 import Set, { SetBlueprint } from "../model/Set";
 
 export async function getSetRequest(id: string) {
@@ -8,7 +9,7 @@ export async function getSetRequest(id: string) {
     },
   });
   if (!response.ok) {
-    throw console.error(response);
+    throw new Error("error");
   }
   const data = await response.json();
   return data.set;
@@ -22,12 +23,7 @@ export async function getAllSetsRequest() {
     },
   });
 
-  if (!response.ok) {
-    throw console.error(response);
-  }
-
-  const { sets } = await response.json();
-  return sets;
+  return response;
 }
 
 export async function updateSetRequest(set: Set) {
