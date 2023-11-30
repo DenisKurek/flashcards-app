@@ -48,7 +48,6 @@ const SignUpForm = () => {
 
     const response = await createUser(user);
     const data = await response.json();
-    console.log(data);
 
     if (!response.ok) {
       setError(data.error || "something went wrong!");

@@ -14,10 +14,7 @@ export function getRandomSubset(flashcards: Flashcard[]) {
   const MAX_INDEX = 10;
   return flashcards
     .slice()
-    .filter((flashcard) => {
-      console.log(isRepeatable(flashcard));
-      return isRepeatable(flashcard);
-    })
+    .filter((flashcard) => isRepeatable(flashcard))
     .slice(0, Math.min(flashcards.length, MAX_INDEX))
     .sort(() => Math.random() - 0.5);
 }

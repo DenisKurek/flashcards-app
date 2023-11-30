@@ -35,7 +35,6 @@ export default function Page({ params }: { params: { id: string } }) {
     }
     const flashcard: Flashcard = flashCards[flashCardId];
     const updatedFlashcard = updateFlashcard(flashcard, actual === expected);
-    console.log(updatedFlashcard);
 
     ctx.addAnswer({ actual, expected }, updatedFlashcard.state);
     flashCards[flashCardId] = updatedFlashcard;
