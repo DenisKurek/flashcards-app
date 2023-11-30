@@ -15,6 +15,7 @@ import {
   AnswersContext,
 } from "@/store/Learning-set-Context";
 import { updateAllSets } from "@/lib/utils/SetUtils";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const MAX_INDEX = 5;
 const shuffled = (array: Flashcard[]) => {
@@ -62,11 +63,12 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     async function getSet() {
       setLoading(true);
-      const sets: Set[] = await getAllSetsRequest();
+      const response = await getAllSetsRequest();
+      const { sets } = await response.json();
       setSets(sets);
       let flashcardsArr: Flashcard[] = [];
       sets.forEach(
-        (set) => (flashcardsArr = flashcardsArr.concat(set.flashcards)),
+        (set: Set) => (flashcardsArr = flashcardsArr.concat(set.flashcards)),
       );
       setFlashCards(getRandomSubset(flashcardsArr));
       ctx.clear();
@@ -79,6 +81,11 @@ export default function Page({ params }: { params: { id: string } }) {
     <LoadingPage />
   ) : (
     <div className="container ">
+      {flashCards.length === 0 && (
+        <ErrorMessage
+          message={"You Have no more flashCards to repeat today. "}
+        />
+      )}
       {flashCards[flashCardId] && (
         <LearnFlashcardForm
           onSubmit={handleSubmit}
