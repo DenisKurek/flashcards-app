@@ -10,7 +10,7 @@ export default function Page({ params }: { params: { id: string } }) {
       </div>
       <div className="m-4 flex grow justify-center">
         <Link
-          href={`/learn-set/${params.id}`}
+          href={"/learn-set/daily-set"}
           className="btn-shadow btn btn-primary"
         >
           Next Round

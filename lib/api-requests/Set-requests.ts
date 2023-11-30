@@ -14,6 +14,22 @@ export async function getSetRequest(id: string) {
   return data.set;
 }
 
+export async function getAllSetsRequest() {
+  const response = await fetch("/api/set", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw console.error(response);
+  }
+
+  const { sets } = await response.json();
+  return sets;
+}
+
 export async function updateSetRequest(set: Set) {
   const blueprint: SetBlueprint = set;
   const response = await fetch(`/api/set/${set._id.toString()}`, {

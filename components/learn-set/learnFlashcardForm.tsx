@@ -7,7 +7,7 @@ import FlipIcon from "../ui/FlipIcon";
 interface Props<> {
   onSubmit: (e: SyntheticEvent, actual: string, expected: string) => void;
   flashCard: Flashcard;
-  setId: string;
+  setId?: string;
 }
 
 const LearnFlashcardForm: React.FC<Props> = (props) => {
@@ -52,7 +52,9 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
       <div className="card-body">
         <div className="card-actions justify-end">
           <FlipIcon onClick={handleFlip} />
-          <EditIcon onClick={() => router.push(`/edit-set/${props.setId}`)} />
+          {props.setId && (
+            <EditIcon onClick={() => router.push(`/edit-set/${props.setId}`)} />
+          )}
         </div>
         <h2 className="card-title justify-center">
           {getDisplayedPart(fliped)}

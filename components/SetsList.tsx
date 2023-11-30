@@ -16,8 +16,11 @@ const SetsList: React.FC<Props> = (props) => {
   return (
     <ul className="container">
       {props.sets.map((set) => (
-        <div key={set._id.toString()} className="card m-5 bg-primary p-4">
-          <div className="flex">
+        <div
+          key={set._id.toString()}
+          className="card m-5 flex min-w-[500px] bg-primary p-4"
+        >
+          <div className="flex min-w-fit">
             <h2
               className="card-title cursor-pointer"
               onClick={() => router.push(`learn-set/${set._id?.toString()}`)}
