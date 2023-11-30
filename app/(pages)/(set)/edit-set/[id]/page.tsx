@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Set, { SetBlueprint } from "@/lib/model/Set";
 import SetEditionForm from "@/components/edit-set/SetEditionForm";
 import { useRouter } from "next/navigation";
-import LoadingPage from "@/app/loading";
+import LoadingPage from "@/app/(pages)/loading";
 import { useSession } from "next-auth/react";
 import {
   getSetRequest,
