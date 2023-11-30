@@ -38,10 +38,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
       className={`card m-2 min-w-fit ${StateColor[props.flashCard.state]}`}
     >
       <div className="card-body p-1">
-        <div
-          className="card-action flex
-"
-        >
+        <div className="card-action flex">
           <div className="input-group-sm flex-grow">
             <select
               className=" select-sm bg-transparent text-black"
@@ -51,6 +48,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
                   concept: props.flashCard.concept,
                   definition: props.flashCard.definition,
                   state: e.target.value as LearningState,
+                  lastUpdate: props.flashCard.lastUpdate,
                 })
               }
             >
@@ -121,6 +119,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
                   concept: e.target.value,
                   definition: props.flashCard.definition,
                   state: props.flashCard.state,
+                  lastUpdate: props.flashCard.lastUpdate,
                 })
               }
             />
@@ -155,6 +154,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
                   concept: props.flashCard.concept,
                   definition: e.target.value,
                   state: props.flashCard.state,
+                  lastUpdate: props.flashCard.lastUpdate,
                 })
               }
             />

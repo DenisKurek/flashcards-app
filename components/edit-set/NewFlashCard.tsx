@@ -14,6 +14,7 @@ const NewFlashCard: React.FC<Props> = (props) => {
           concept: "",
           definition: "",
           state: LearningState.NOT_STARTED,
+          lastUpdate: new Date(),
         });
       }}
       className="btn btn-secondary btn-outline m-2 flex"

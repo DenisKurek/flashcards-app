@@ -1,12 +1,41 @@
 import Flashcard, { LearningState } from "../model/FlashCard";
 
 export function updateFlashcard(flashcard: Flashcard, correct: boolean) {
+  flashcard.lastUpdate = new Date();
   if (!correct) {
     flashcard.state = LearningState.NOT_STARTED;
     return flashcard;
   }
   flashcard.state = updateState(flashcard.state);
   return flashcard;
+}
+
+export function getRandomSubset(flashcards: Flashcard[]) {
+  const MAX_INDEX = 10;
+  return flashcards
+    .slice()
+    .filter((flashcard) => isRepeatable(flashcard))
+    .slice(0, Math.min(flashcards.length, MAX_INDEX))
+    .sort(() => Math.random() - 0.5);
+}
+
+function isRepeatable(flashCard: Flashcard) {
+  const currentDate = new Date();
+  if (!flashCard.lastUpdate) {
+    return true;
+  }
+  switch (flashCard.state) {
+    case LearningState.NOT_STARTED:
+      return true;
+    case LearningState.RECENTLY_STARTED:
+      return flashCard.lastUpdate < new Date(currentDate.getDate() - 1);
+    case LearningState.LEARNING:
+      return flashCard.lastUpdate < new Date(currentDate.getDate() - 7);
+    case LearningState.ALMOST_MASTERED:
+      return flashCard.lastUpdate < new Date(currentDate.getDate() - 30);
+    case LearningState.MASTERED:
+      return flashCard.lastUpdate < new Date(currentDate.getDate() - 365);
+  }
 }
 
 function updateState(state: LearningState) {

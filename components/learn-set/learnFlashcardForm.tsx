@@ -7,14 +7,14 @@ import FlipIcon from "../ui/FlipIcon";
 interface Props<> {
   onSubmit: (e: SyntheticEvent, actual: string, expected: string) => void;
   flashCard: Flashcard;
-  setId: string;
+  setId?: string;
 }
 
 const LearnFlashcardForm: React.FC<Props> = (props) => {
-  const answerRef = useRef<any>();
   const router = useRouter();
   const [fliped, setFliped] = useState<boolean>(true);
   const [placecholder, setPlacecholder] = useState<string>();
+  const [answer, setAnswer] = useState<string>("");
   const [borderColor, setborderColor] = useState<string | undefined>();
 
   const getDisplayedPart = (fliped: boolean) => {
@@ -32,27 +32,28 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const currentValue = answerRef.current.value;
     const correctValue = getHiddenPart(fliped);
     setborderColor(
-      currentValue === correctValue && !placecholder
+      answer === correctValue && !placecholder
         ? "input-success"
         : "input-error",
     );
     setTimeout(() => {
-      props.onSubmit(e, currentValue, correctValue);
+      props.onSubmit(e, answer, correctValue);
       setborderColor(undefined);
-      answerRef.current.value = "";
+      setAnswer("");
       setPlacecholder(undefined);
     }, 2_000);
   };
 
   return (
-    <form className="card bg-neutral" onSubmit={handleSubmit}>
+    <form className="card min-w-fit bg-neutral" onSubmit={handleSubmit}>
       <div className="card-body">
         <div className="card-actions justify-end">
           <FlipIcon onClick={handleFlip} />
-          <EditIcon onClick={() => router.push(`/edit-set/${props.setId}`)} />
+          {props.setId && (
+            <EditIcon onClick={() => router.push(`/edit-set/${props.setId}`)} />
+          )}
         </div>
         <h2 className="card-title justify-center">
           {getDisplayedPart(fliped)}
@@ -65,7 +66,8 @@ const LearnFlashcardForm: React.FC<Props> = (props) => {
           id="answer"
           type="text"
           className={`input ${borderColor ? borderColor : "input-primary"}`}
-          ref={answerRef}
+          value={answer}
+          onChange={(e) => setAnswer(e.currentTarget.value)}
           placeholder={placecholder}
         />
 

@@ -1,27 +1,34 @@
 "use client";
-import LoadingPage from "@/app/loading";
+import LoadingPage from "@/app/(pages)/loading";
 import LearnFlashcardForm from "@/components/learn-set/learnFlashcardForm";
 import Set from "@/lib/model/Set";
 import { useRouter } from "next/navigation";
 import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import {
-  getSetRequest,
+  getAllSetsRequest,
   updateSetRequest,
 } from "@/lib/api-requests/Set-requests";
-import Flashcard from "@/lib/model/FlashCard";
-import { updateFlashcard } from "@/lib/utils/flashcardUtils";
+import Flashcard, { LearningState } from "@/lib/model/FlashCard";
+import { getRandomSubset, updateFlashcard } from "@/lib/utils/flashcardUtils";
 import {
   AnswerContextType,
   AnswersContext,
 } from "@/store/Learning-set-Context";
+import { updateAllSets } from "@/lib/utils/SetUtils";
 
-const shuffled = (array: []) => {
-  return array.slice().sort(() => Math.random() - 0.5);
+const MAX_INDEX = 5;
+const shuffled = (array: Flashcard[]) => {
+  const order = Object.values(LearningState);
+  return array
+    .slice()
+    .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
+    .slice(0, Math.min(array.length, MAX_INDEX))
+    .sort(() => Math.random() - 0.5);
 };
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [set, setSet] = useState<Set>();
+  const [sets, setSets] = useState<Set[]>();
   const [flashCards, setFlashCards] = useState<Flashcard[]>([]);
   const [flashCardId, setFlashCardId] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,8 +40,8 @@ export default function Page({ params }: { params: { id: string } }) {
     expected: string,
   ) => {
     e.preventDefault();
-    if (!set) {
-      throw new Error("set not initialized");
+    if (!sets) {
+      throw new Error("sets not initialized");
     }
     const flashcard: Flashcard = flashCards[flashCardId];
     const updatedFlashcard = updateFlashcard(flashcard, actual === expected);
@@ -44,24 +51,24 @@ export default function Page({ params }: { params: { id: string } }) {
     if (flashCards && flashCardId < flashCards.length - 1) {
       setFlashCardId((prev) => prev + 1);
     } else {
-      set.flashcards.map((flashCard, index) => {
-        flashCards.forEach((updatedFlashcard) => {
-          if (updatedFlashcard.id === flashCard.id) {
-            set.flashcards[index] = updatedFlashcard;
-          }
-        });
+      const updatedSets = updateAllSets(sets, flashCards);
+      updatedSets.forEach((set) => {
+        updateSetRequest(set);
       });
-      updateSetRequest(set);
-      router.push(`${params.id}/summary`);
+      router.push("/learn-set/daily-set/summary");
     }
   };
 
   useEffect(() => {
     async function getSet() {
       setLoading(true);
-      const data = await getSetRequest(params.id);
-      setSet(data);
-      setFlashCards(shuffled(data.flashcards));
+      const sets: Set[] = await getAllSetsRequest();
+      setSets(sets);
+      let flashcardsArr: Flashcard[] = [];
+      sets.forEach(
+        (set) => (flashcardsArr = flashcardsArr.concat(set.flashcards)),
+      );
+      setFlashCards(getRandomSubset(flashcardsArr));
       ctx.clear();
       setLoading(false);
     }
@@ -72,9 +79,8 @@ export default function Page({ params }: { params: { id: string } }) {
     <LoadingPage />
   ) : (
     <div className="container ">
-      {set && flashCards[flashCardId] && (
+      {flashCards[flashCardId] && (
         <LearnFlashcardForm
-          setId={set._id.toString()}
           onSubmit={handleSubmit}
           flashCard={flashCards[flashCardId]}
         />

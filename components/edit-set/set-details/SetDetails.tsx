@@ -16,7 +16,6 @@ const SetDetails: React.FC<Props> = (props) => {
       return;
     }
     props.onTagsUpdate((prev: string[]) => prev.concat(tag));
-    console.log("tag: ", tag);
 
     const response = await fetch("/api/tag", {
       method: "POST",
