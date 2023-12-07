@@ -1,16 +1,21 @@
-import TagSection from "@/components/edit-set/set-details/TagSection";
-import { SearchParameters } from "@/lib/model/Set";
+import Set, { SearchParameters } from "@/lib/model/Set";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
+import SetsList from "./SetsList";
 
 interface Props {
   error?: string;
+  sets: Set[] | undefined;
   onSubmit: (SearchParameters: SearchParameters) => void;
 }
 
+interface Tag {
+  label: string;
+  selected: boolean;
+}
+
 const SetSearchForm: React.FC<Props> = (props) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [possibleTags, setPossibleTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const fromLanguageRef: any = useRef();
   const toLanguageRef: any = useRef();
 
@@ -26,39 +31,37 @@ const SetSearchForm: React.FC<Props> = (props) => {
         throw console.error(response);
       }
       const { tags } = await response.json();
-      setPossibleTags(tags.map((tag: any) => tag.tag));
+      setTags(
+        tags.map((tag: any) => {
+          return {
+            label: tag.tag,
+            selected: false,
+          };
+        }),
+      );
     }
     loadPossibleTags();
   }, []);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log(tags.filter((tag) => tag.selected));
     const searchParameters: SearchParameters = {
       fromLanguage: fromLanguageRef.current.value,
       toLanguage: toLanguageRef.current.value,
-      tags: selectedTags,
+      tags: tags.filter((tag) => tag.selected).map((tag) => tag.label),
     };
 
     props.onSubmit(searchParameters);
   };
 
-  const handleTagRemoval = (removedTag: string) => {
-    setPossibleTags((prev) => prev.concat(removedTag));
-    setSelectedTags((prev) => prev.filter((tag) => tag != removedTag));
-  };
-
-  const handleTagAddition = (addedTag: string) => {
-    setSelectedTags((prev) => prev.concat(addedTag));
-    setPossibleTags((prev) => prev.filter((tag) => tag != addedTag));
-  };
-
   return (
     <form
-      className="container card w-full space-y-3 bg-neutral p-3"
+      className="container card w-full min-w-fit space-y-3 bg-neutral p-3"
       onSubmit={handleSubmit}
     >
       {props.error && <ErrorMessage message={props.error} />}
-      <div className="flex">
+      <div className="flex ">
         <label
           className="input-group input-group-vertical mx-2"
           htmlFor={`language-from`}
@@ -87,19 +90,33 @@ const SetSearchForm: React.FC<Props> = (props) => {
           />
         </label>
       </div>
-      <div className="card bg-gray-500 text-black">
-        <div className="card-body">
-          <h3 className="card-title">Possible Tags</h3>
-          <TagSection tags={possibleTags} onClick={handleTagAddition} />
-        </div>
+      <div className="container p-2">
+        {tags.map((tag) => (
+          <div key={tag.label} className="badge badge-secondary m-2 gap-2">
+            {tag.label}
+            <input
+              type="checkbox"
+              defaultChecked={false}
+              className="checkbox checkbox-xs"
+              onChange={() =>
+                setTags((prev) =>
+                  prev.map((prevTag) =>
+                    prevTag.label === tag.label
+                      ? { ...prevTag, selected: !prevTag.selected }
+                      : prevTag,
+                  ),
+                )
+              }
+            />
+          </div>
+        ))}
       </div>
+      {props.sets && (
+        <div className="container p-2">
+          <SetsList sets={props.sets} />
+        </div>
+      )}
 
-      <div className="card bg-gray-500 text-black">
-        <div className="card-body">
-          <h3 className="card-title">Selected Tags</h3>
-          <TagSection tags={selectedTags} onRemove={handleTagRemoval} />
-        </div>
-      </div>
       <div className="flex grow justify-center">
         <button className=" btn mt-auto w-1/3 bg-primary" type="submit">
           Search
