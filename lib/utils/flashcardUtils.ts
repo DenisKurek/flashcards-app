@@ -21,6 +21,7 @@ export function getRandomSubset(flashcards: Flashcard[]) {
 
 function isRepeatable(flashCard: Flashcard) {
   const currentDate = new Date();
+  const updateDate = new Date(flashCard.lastUpdate);
   if (!flashCard.lastUpdate) {
     return true;
   }
@@ -28,14 +29,20 @@ function isRepeatable(flashCard: Flashcard) {
     case LearningState.NOT_STARTED:
       return true;
     case LearningState.RECENTLY_STARTED:
-      return flashCard.lastUpdate < new Date(currentDate.getDate() - 1);
+      return updateDate < beforeDays(currentDate, 1);
     case LearningState.LEARNING:
-      return flashCard.lastUpdate < new Date(currentDate.getDate() - 7);
+      return updateDate < beforeDays(currentDate, 7);
     case LearningState.ALMOST_MASTERED:
-      return flashCard.lastUpdate < new Date(currentDate.getDate() - 30);
+      return updateDate < beforeDays(currentDate, 30);
     case LearningState.MASTERED:
-      return flashCard.lastUpdate < new Date(currentDate.getDate() - 365);
+      return updateDate < beforeDays(currentDate, 365);
   }
+}
+
+function beforeDays(date: Date, days: number) {
+  const newDate = new Date(date);
+  newDate.setDate(newDate.getDate() - days);
+  return newDate;
 }
 
 function updateState(state: LearningState) {
