@@ -28,7 +28,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "lib/utils/db.ts",
-    "app/api/auth/[...nextauth]/route.ts"
+    "app/api/auth/[...nextauth]/route.ts",
+    "jest.setup.js",
+    "ts-jest",
+    "__tests__/flashcardForm.test.jsx"
   ],
   "exclude": ["node_modules"]
 }
