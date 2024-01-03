@@ -19,7 +19,7 @@ export function getRandomSubset(flashcards: Flashcard[]) {
     .sort(() => Math.random() - 0.5);
 }
 
-function isRepeatable(flashCard: Flashcard) {
+export function isRepeatable(flashCard: Flashcard) {
   const currentDate = new Date();
   const updateDate = new Date(flashCard.lastUpdate);
   if (!flashCard.lastUpdate) {

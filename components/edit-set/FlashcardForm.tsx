@@ -35,6 +35,7 @@ const FlashcardForm: React.FC<Props> = (props) => {
   return (
     <li
       key={props.flashCard.id}
+      data-testid="flashcardForm"
       className={`card m-2 min-w-fit ${StateColor[props.flashCard.state]}`}
     >
       <div className="card-body p-1">
