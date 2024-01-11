@@ -3,6 +3,7 @@ import { searchForSet } from "@/lib/actions";
 import { experimental_useFormState } from "react-dom";
 import Link from "next/link";
 import Flashcard, { LearningState, StateColor } from "@/lib/model/FlashCard";
+import Set from "@/lib/model/Set";
 
 interface Props {
   tags: string[];
@@ -62,7 +63,7 @@ export default function SetSearchForm(props: Props) {
       {sets && (
         <div className="container p-2">
           <ul className="container">
-            {sets.map((set) => (
+            {sets.map((set: Set) => (
               <div
                 key={set._id.toString()}
                 className="card m-5 flex min-w-[500px] bg-primary p-4"
