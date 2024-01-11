@@ -1,22 +1,20 @@
 "use server";
-import { LanguageSettings } from "./model/Set";
 import { getUsername } from "./utils/auth";
 import { conntectToDatabase } from "./utils/db";
+import Flashcard, { LearningState } from "./model/FlashCard";
 import Set from "./model/Set";
-import { LearningState } from "./model/FlashCard";
-import { redirect } from "next/dist/server/api-utils";
 
 export async function searchForSet(prevState: any, formData: FormData) {
   const client = await conntectToDatabase();
   const db = client.db();
   const collection = db.collection("sets");
 
-  const languageSettings: LanguageSettings = {
-    concept: formData.get("language-from").toString(),
-    definition: formData.get("language-to").toString(),
+  const languageSettings = {
+    concept: formData.get("language-from")?.toString(),
+    definition: formData.get("language-to")?.toString(),
   };
 
-  const result: Set[] = await collection
+  const result: any = await collection
     .find({
       language: languageSettings,
       tags: { $in: formData.getAll("tag").map((tag) => tag.toString()) },
@@ -26,12 +24,12 @@ export async function searchForSet(prevState: any, formData: FormData) {
 
   const username = await getUsername();
   const sets = result
-    .filter((set) => set.username !== username)
-    .map((set) => {
+    .filter((set: Set) => set.username !== username)
+    .map((set: Set) => {
       return {
         ...set,
         _id: set._id.toString(),
-        flashcards: set.flashcards.map((flashcard) => {
+        flashcards: set.flashcards.map((flashcard: Flashcard) => {
           return { ...flashcard, state: LearningState.NOT_STARTED };
         }),
       };

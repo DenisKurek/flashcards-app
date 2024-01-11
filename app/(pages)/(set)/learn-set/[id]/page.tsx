@@ -27,6 +27,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const handleSubmit = (
     e: SyntheticEvent,
+    question: string,
     actual: string,
     expected: string,
   ) => {
@@ -37,7 +38,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const flashcard: Flashcard = flashCards[flashCardId];
     const updatedFlashcard = updateFlashcard(flashcard, actual === expected);
 
-    ctx.addAnswer({ actual, expected }, updatedFlashcard.state);
+    ctx.addAnswer(question, { actual, expected }, updatedFlashcard.state);
     flashCards[flashCardId] = updatedFlashcard;
 
     if (flashCards && flashCardId < flashCards.length - 1) {

@@ -11,7 +11,7 @@ const SummaryTable: React.FC = () => {
     <table className="table text-center">
       <thead>
         <tr>
-          <th>id</th>
+          <th>question</th>
           <th>Your Answer</th>
           <th>Correct Answer</th>
           <th>new State</th>

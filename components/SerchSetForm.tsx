@@ -2,7 +2,7 @@
 import { searchForSet } from "@/lib/actions";
 import { experimental_useFormState } from "react-dom";
 import Link from "next/link";
-import { LearningState, StateColor } from "@/lib/model/FlashCard";
+import Flashcard, { LearningState, StateColor } from "@/lib/model/FlashCard";
 
 interface Props {
   tags: string[];
@@ -89,7 +89,7 @@ export default function SetSearchForm(props: Props) {
                         {state + ": "}
                         {
                           set.flashcards.filter(
-                            (flashcard) => flashcard.state == state,
+                            (flashcard: Flashcard) => flashcard.state == state,
                           ).length
                         }
                       </div>

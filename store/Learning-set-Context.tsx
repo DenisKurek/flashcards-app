@@ -2,6 +2,7 @@ import { LearningState } from "@/lib/model/FlashCard";
 import { createContext, useState } from "react";
 
 export interface Answer {
+  question: string;
   actual: string;
   expected: string;
   isCorrect: boolean;
@@ -11,6 +12,7 @@ export interface Answer {
 export interface AnswerContextType {
   answers: Answer[];
   addAnswer: (
+    question: string,
     answer: { actual: string; expected: string },
     state: LearningState,
   ) => void;
@@ -26,11 +28,13 @@ export default function AnswersContextProvider({
 }) {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const handleAddAnswer = (
+    question: string,
     answer: { actual: string; expected: string },
     state: LearningState,
   ) => {
     setAnswers((prev) =>
       prev.concat({
+        question,
         ...answer,
         isCorrect: answer.actual === answer.expected,
         newState: state,

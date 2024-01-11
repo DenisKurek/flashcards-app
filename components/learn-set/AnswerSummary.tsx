@@ -14,14 +14,10 @@ const AnswerSummary: React.FC<Props> = (props) => {
   const state = props.answer.newState;
   return (
     <tr key={props.index} className={getColor(props.answer.isCorrect)}>
-      <th>{props.index}</th>
+      <th>{props.answer.question}</th>
       <td>{props.answer.actual}</td>
       <td>{props.answer.expected}</td>
-      <td
-        className={`${state && StateColor[state]} badge m-2 gap-2 text-black`}
-      >
-        {state + ": "}
-      </td>
+      <td>{props.answer.newState}</td>
     </tr>
   );
 };
