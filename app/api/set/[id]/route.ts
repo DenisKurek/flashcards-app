@@ -26,7 +26,7 @@ export async function PUT(
   const collection = db.collection("sets");
   const set: Set = await request.json();
   const dbSet = await collection.findOne(new ObjectId(params.id));
-  const user = await getUsername()
+  const user = await getUsername();
   if (dbSet?.username && dbSet.username !== user) {
     return NextResponse.json(
       { message: "this Set Belongs to other user " },

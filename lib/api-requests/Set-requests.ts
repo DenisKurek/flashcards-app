@@ -1,5 +1,6 @@
-import { redirect, useRouter } from "next/navigation";
+import { ObjectId } from "mongodb";
 import Set, { SetBlueprint } from "../model/Set";
+import { conntectToDatabase } from "../utils/db";
 
 export async function getSetRequest(id: string) {
   const response = await fetch(`/api/set/${id}`, {

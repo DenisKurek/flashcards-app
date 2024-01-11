@@ -1,3 +1,4 @@
+"use client";
 import { LanguageSettings, SetBlueprint } from "@/lib/model/Set";
 import FlashcardForm from "./FlashcardForm";
 import NewFlashCard from "./NewFlashCard";
@@ -65,7 +66,7 @@ const SetEditionForm: React.FC<Props> = (props) => {
         {flashCards.map((flashCard) => (
           <FlashcardForm
             flashCard={flashCard}
-            key={flashCard.id}
+            key={`${flashCard.id}`}
             onUpdate={handleFlashCardUpdate}
             onDelete={handleFlashCardDelete}
             language={language}

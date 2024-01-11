@@ -1,66 +1,21 @@
-import Set, { SearchParameters } from "@/lib/model/Set";
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
-import ErrorMessage from "./ErrorMessage";
-import SetsList from "./SetsList";
+"use client";
+import { searchForSet } from "@/lib/actions";
+import { experimental_useFormState } from "react-dom";
+import Link from "next/link";
+import { LearningState, StateColor } from "@/lib/model/FlashCard";
 
 interface Props {
-  error?: string;
-  sets: Set[] | undefined;
-  onSubmit: (SearchParameters: SearchParameters) => void;
+  tags: string[];
 }
 
-interface Tag {
-  label: string;
-  selected: boolean;
-}
-
-const SetSearchForm: React.FC<Props> = (props) => {
-  const [tags, setTags] = useState<Tag[]>([]);
-  const fromLanguageRef: any = useRef();
-  const toLanguageRef: any = useRef();
-
-  useEffect(() => {
-    async function loadPossibleTags() {
-      const response = await fetch(`/api/tag`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw console.error(response);
-      }
-      const { tags } = await response.json();
-      setTags(
-        tags.map((tag: any) => {
-          return {
-            label: tag.tag,
-            selected: false,
-          };
-        }),
-      );
-    }
-    loadPossibleTags();
-  }, []);
-
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-    console.log(tags.filter((tag) => tag.selected));
-    const searchParameters: SearchParameters = {
-      fromLanguage: fromLanguageRef.current.value,
-      toLanguage: toLanguageRef.current.value,
-      tags: tags.filter((tag) => tag.selected).map((tag) => tag.label),
-    };
-
-    props.onSubmit(searchParameters);
-  };
+export default function SetSearchForm(props: Props) {
+  const [sets, formAction] = experimental_useFormState(searchForSet, []);
 
   return (
     <form
       className="container card w-full min-w-fit space-y-3 bg-neutral p-3"
-      onSubmit={handleSubmit}
+      action={formAction}
     >
-      {props.error && <ErrorMessage message={props.error} />}
       <div className="flex ">
         <label
           className="input-group input-group-vertical mx-2"
@@ -69,10 +24,10 @@ const SetSearchForm: React.FC<Props> = (props) => {
           <span className=" bg-gray-400 text-black">From</span>
           <input
             type="text"
+            name="language-from"
             className="input input-bordered input-secondary "
             id={`language-from`}
             defaultValue={"English"}
-            ref={fromLanguageRef}
           />
         </label>
 
@@ -83,40 +38,69 @@ const SetSearchForm: React.FC<Props> = (props) => {
           <span className=" bg-gray-400 text-black">To</span>
           <input
             type="text"
+            name="language-to"
             className="input input-bordered input-secondary "
             id={`language-to`}
             defaultValue={"Polish"}
-            ref={toLanguageRef}
           />
         </label>
       </div>
       <div className="container p-2">
-        {tags.map((tag) => (
-          <div key={tag.label} className="badge badge-secondary m-2 gap-2">
-            {tag.label}
+        {props.tags.map((tag) => (
+          <div key={tag} className="badge badge-secondary m-2 gap-2">
+            {tag}
             <input
               type="checkbox"
+              name="tag"
+              value={tag}
               defaultChecked={false}
               className="checkbox checkbox-xs"
-              onChange={() =>
-                setTags((prev) =>
-                  prev.map((prevTag) =>
-                    prevTag.label === tag.label
-                      ? { ...prevTag, selected: !prevTag.selected }
-                      : prevTag,
-                  ),
-                )
-              }
             />
           </div>
         ))}
       </div>
-      {props.sets && (
+      {sets && (
         <div className="container p-2">
-          <SetsList sets={props.sets} />
+          <ul className="container">
+            {sets.map((set) => (
+              <div
+                key={set._id.toString()}
+                className="card m-5 flex min-w-[500px] bg-primary p-4"
+              >
+                <Link
+                  href={`search-set/${set._id.toString()}`}
+                  className=" min-w-fit"
+                >
+                  <h2 className="card-title">{set.name}</h2>
+                  <div>
+                    {[
+                      LearningState.NOT_STARTED,
+                      LearningState.RECENTLY_STARTED,
+                      LearningState.LEARNING,
+                      LearningState.ALMOST_MASTERED,
+                      LearningState.MASTERED,
+                    ].map((state) => (
+                      <div
+                        key={state}
+                        className={`${
+                          state && StateColor[state]
+                        } badge m-2 gap-2 text-black`}
+                      >
+                        {state + ": "}
+                        {
+                          set.flashcards.filter(
+                            (flashcard) => flashcard.state == state,
+                          ).length
+                        }
+                      </div>
+                    ))}
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </ul>
         </div>
       )}
-
       <div className="flex grow justify-center">
         <button className=" btn mt-auto w-1/3 bg-primary" type="submit">
           Search
@@ -124,5 +108,4 @@ const SetSearchForm: React.FC<Props> = (props) => {
       </div>
     </form>
   );
-};
-export default SetSearchForm;
+}
